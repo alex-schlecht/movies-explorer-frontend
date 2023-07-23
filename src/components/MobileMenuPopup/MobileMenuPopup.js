@@ -1,16 +1,16 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const MobileMenuPopup = ({ open, close }) => {
+const MobileMenuPopup = ({ openPopup, closePopup }) => {
   return (
     <div 
-      className={`mobile-menu-popup ${open ? "mobile-menu-popup_visible" : ""}`}
+      className={`mobile-menu-popup ${openPopup ? "mobile-menu-popup_visible" : ""}`}
       role="dialog"
       tabIndex="-1"
     >
       <button
         className="mobile-menu-popup__button mobile-menu-popup__close_button"
-        onClick={close}
+        onClick={closePopup}
         type="button"
       />
       <div className="mobile-menu-popup__container">

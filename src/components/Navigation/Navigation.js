@@ -1,16 +1,36 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useOpenPopup } from "../../hooks/useOpenPopup";
 import MobileMenuButton from "../MobileMenuButton/MobileMenuButton";
 
 
 const Navigation = ({headerType}) => {
 
-  const {open, close} = useOpenPopup();
-
   return (
     <>
-      {headerType === 'main' || 'non-authorized' && (
+      {headerType === 'main'  && (
+        <nav className="navigation">
+          <ul className="navigation__unauthorized-links">
+            <li>
+              <NavLink 
+                className="navigation__link" 
+                to="/signup"
+              >
+                Регистрация
+              </NavLink>
+            </li>
+            <li>
+              <NavLink 
+                className="navigation__link navigation__link_signin" 
+                to="/signin"
+              >
+                Войти
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+      )};
+
+      {headerType === 'non-authorized' && (
         <nav className="navigation">
           <ul className="navigation__unauthorized-links">
             <li>
@@ -62,7 +82,7 @@ const Navigation = ({headerType}) => {
         </nav>
       )};
       {headerType === 'mobile' && (
-        <MobileMenuButton onClick={open} onClose={close}/>
+        <MobileMenuButton/>
       )}
     </>
   );

@@ -11,7 +11,6 @@ import Error from "../Error/Error";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Footer from "../Footer/Footer";
-import { useOpenPopup } from "../../hooks/useOpenPopup";
 
 function App() {
   const location = useLocation();
@@ -19,7 +18,32 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentuser] = useState({});
   const [headerType, setHeaderType] = useState('default');
-  const {open, close, isOpen} = useOpenPopup();
+  const [headerHide, setHeaderHide] = useState(true);
+  const [footerHide, setFooterHide] = useState(true);
+
+  const allAuthRoutesHeader = ['/profile', '/movies', '/saved-movies'];
+  const allRoutesHeader = ['/', '/movies', '/saved-movies', '/profile'];
+  const allRoutesFooter = ['/', '/movies', '/saved-movies'];
+
+  useEffect(() => {
+
+    if (!allRoutesHeader.includes(location.pathname)) {
+      setHeaderHide(true);
+    } else {
+      setHeaderHide(false);
+    }
+    if (!allRoutesFooter.includes(location.pathname)) {
+      setFooterHide(true);
+    } else {
+      setFooterHide(false);
+    }
+
+    if (!allAuthRoutesHeader.includes(location.pathname)) {
+      setLoggedIn(false);
+    } else {
+      setLoggedIn(true);
+    }
+  }, [location]);
 
   useEffect(() => {
     const width = window.innerWidth;
@@ -42,10 +66,8 @@ function App() {
   return (
     <CurrentUser.Provider value={currentUser}>
       <div className="app">
-        <Header headerType={headerType}/>
-        {isOpen && (
-          <MobileMenuPopup open={open} close={close}/>
-        )}
+        {headerHide ? null : <Header headerType={headerType}/>} 
+
         <Routes>
           <Route path="/" element={<Main/>}/>
           <Route path="/signin" element={<Login loggedIn={setLoggedIn}/>}/>
@@ -55,7 +77,8 @@ function App() {
           <Route path="/saved-movies" element={<SavedMovies isLoading={isLoading}/>}/>
           <Route path="*" element={<Error code="404" description="Страница не найдена"/>}/>
         </Routes>
-        <Footer/>
+        {footerHide ? null : <Footer/>}
+        {!loggedIn ? null : <MobileMenuPopup/> }
       </div>  
     </CurrentUser.Provider>
   );
