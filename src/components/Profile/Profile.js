@@ -87,7 +87,7 @@ const Profile = () => {
           </button>) :
           (<nav className="profile__navigation">
             <button className="profile__edit-button" onClick={handleEditProfile}>Редактировать</button>
-            <Link className="profile__quit profile__quit-red" to="/signout">Выйти из аккаунта</Link>
+            <Link className="profile__quit profile__quit-red" to="/signin">Выйти из аккаунта</Link>
           </nav>)
         }
       </form>

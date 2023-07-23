@@ -19,7 +19,6 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentuser] = useState({});
   const [headerType, setHeaderType] = useState('default');
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const {open, close, isOpen} = useOpenPopup();
 
   useEffect(() => {
@@ -43,9 +42,9 @@ function App() {
   return (
     <CurrentUser.Provider value={currentUser}>
       <div className="app">
-        <Header open={open} close={close}/>
+        <Header headerType={headerType}/>
         {isOpen && (
-          <MobileMenuPopup/>
+          <MobileMenuPopup open={open} close={close}/>
         )}
         <Routes>
           <Route path="/" element={<Main/>}/>

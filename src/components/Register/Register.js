@@ -1,9 +1,10 @@
 import React from "react";
 import useValidation from "../../hooks/useValidation"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LogoLink from "../Header/LogoLink/LogoLink";
 
 const Register = ({resumeOfErrors}) => {
+  const navigate = useNavigate();
   const {inputValue, inputValid, inputInvalid, handleFormChange} = useValidation();
 
   const inputFields = [
@@ -41,6 +42,7 @@ const Register = ({resumeOfErrors}) => {
 
   function handleSubmit(event) {
     event.preventDefault();
+    navigate("/signin");
   };
 
   const formClassSettings = {

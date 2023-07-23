@@ -2,7 +2,7 @@ import React from "react";
 import LogoLink from "./LogoLink/LogoLink";
 import Navigation from "../Navigation/Navigation";
 
-const Header = ({headerType, openPopup}) => {
+const Header = ({headerType}) => {
 
   return (
     <header className="header">

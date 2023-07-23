@@ -8,14 +8,9 @@ const Navigation = ({headerType}) => {
 
   const {open, close} = useOpenPopup();
 
-  if 
-    (headerType === 'non-authorized') {
-      return null;
-  }
-
   return (
     <>
-      {headerType === 'main' && (
+      {headerType === 'main' || 'non-authorized' && (
         <nav className="navigation">
           <ul className="navigation__unauthorized-links">
             <li>
@@ -60,6 +55,7 @@ const Navigation = ({headerType}) => {
           </ul>
           <NavLink
             className="navigation__link navigation__profile-link"
+            to="/profile"
           >
             Аккаунт<div className="navigation__profile-icon"></div>
           </NavLink>
