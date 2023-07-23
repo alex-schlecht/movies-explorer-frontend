@@ -1,20 +1,13 @@
 import React from "react";
 import LogoLink from "./LogoLink/LogoLink";
 import Navigation from "../Navigation/Navigation";
-import MobileMenuButton from "../MobileMenuButton/MobileMenuButton";
 
-const Header = ({loggedIn, isMobileMenuPopupOpen}) => {
-
-  const handleChange = () => {
-    loggedIn(true);
-    isMobileMenuPopupOpen(false);
-  }
+const Header = ({headerType, openPopup}) => {
 
   return (
     <header className="header">
       <LogoLink/>
-      <Navigation loggedIn={loggedIn}/>
-      {loggedIn && <MobileMenuButton isMobileMenuPopupOpen={handleChange}/>}
+      <Navigation openPopup={openPopup} headerType={headerType}/>
     </header>
   );
 };

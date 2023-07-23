@@ -13,28 +13,43 @@ import SavedMovies from "../SavedMovies/SavedMovies";
 import Footer from "../Footer/Footer";
 
 function App() {
-  const loc = useLocation();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isMobileMenuPopupOpen, setIsMobileMenuPopupOpen] = useState(false);
   const [currentUser, setCurrentuser] = useState({});
+  const [headerType, setHeaderType] = useState('default');
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const allowedRoutesIfAuthorized = ["/movies", "/saved-movies", "/profile"];
-  const allowedRoutesHeader = ["/", "/movies", "/saved-movies", "/profile"];
-  const allowedRoutesFooter = ['/', '/movies', '/saved-movies'];
+  useEffect(() => {
+    const width = window.innerWidth;
+  
+    if (width < 768) {
+      setHeaderType('mobile');
+    } else {
+      if (location.pathname === '/') {
+        setHeaderType('main');
+      }
+  
+      if (loggedIn) {
+        setHeaderType('authorized');
+      } else {
+        setHeaderType('non-authorized');
+      }
+    }
+  }, [location, loggedIn]);
 
-  const onClickOverlay = () => {
-    setIsMobileMenuPopupOpen(!isMobileMenuPopupOpen);
-  };
-
-  const handleMobileMenuPopupOpen = () => {
-    setIsMobileMenuPopupOpen(!isMobileMenuPopupOpen);
+  const openPopup = () => {
+    setIsPopupOpen(true);
   };
 
   return (
     <CurrentUser.Provider value={currentUser}>
       <div className="app">
-        <Header loggedIn={setLoggedIn} isMobileMenuPopupOpen={setIsMobileMenuPopupOpen}/>
+        <Header headerType={headerType} openPopup={openPopup} loggedIn={setLoggedIn} isMobileMenuPopupOpen={setIsMobileMenuPopupOpen}/>
+        {isPopupOpen && (
+          <MobileMenuPopup onClose={() => setIsPopupOpen(false)} />
+        )}
         <Routes>
           <Route path="/" element={<Main/>}/>
           <Route path="/signin" element={<Login loggedIn={setLoggedIn}/>}/>
