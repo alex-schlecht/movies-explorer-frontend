@@ -11,15 +11,16 @@ import Error from "../Error/Error";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Footer from "../Footer/Footer";
+import { useOpenPopup } from "../../hooks/useOpenPopup";
 
 function App() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isMobileMenuPopupOpen, setIsMobileMenuPopupOpen] = useState(false);
   const [currentUser, setCurrentuser] = useState({});
   const [headerType, setHeaderType] = useState('default');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const {open, close, isOpen} = useOpenPopup();
 
   useEffect(() => {
     const width = window.innerWidth;
@@ -39,16 +40,12 @@ function App() {
     }
   }, [location, loggedIn]);
 
-  const openPopup = () => {
-    setIsPopupOpen(true);
-  };
-
   return (
     <CurrentUser.Provider value={currentUser}>
       <div className="app">
-        <Header headerType={headerType} openPopup={openPopup} loggedIn={setLoggedIn} isMobileMenuPopupOpen={setIsMobileMenuPopupOpen}/>
-        {isPopupOpen && (
-          <MobileMenuPopup onClose={() => setIsPopupOpen(false)} />
+        <Header open={open} close={close}/>
+        {isOpen && (
+          <MobileMenuPopup/>
         )}
         <Routes>
           <Route path="/" element={<Main/>}/>

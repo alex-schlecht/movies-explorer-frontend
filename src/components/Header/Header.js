@@ -7,7 +7,7 @@ const Header = ({headerType, openPopup}) => {
   return (
     <header className="header">
       <LogoLink/>
-      <Navigation openPopup={openPopup} headerType={headerType}/>
+      <Navigation headerType={headerType}/>
     </header>
   );
 };
