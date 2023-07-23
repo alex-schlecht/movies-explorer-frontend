@@ -1,0 +1,40 @@
+@import url(./vendor/normalize.css);
+@import url(./components/Main/HeadingGrade/HeadingGrade2/HeadingGrade2.css);
+@import url(./components/Main/HeadingGrade/HeadingGrade3/HeadingGrade3.css);
+@import url(./components/Main/HeadingGrade/HeadingGrade4/HeadingGrade4.css);
+@import url(./components/Main/HeadingGrade/HeadingGrade5/HeadingGrade5.css);
+
+@import url(./components/App/App.css);
+
+@import url(./components/Header/Header.css);
+@import url(./components/Header/LogoLink/LogoLink.css);
+@import url(./components/Header/LogoIMG/LogoIMG.css);
+@import url(./components/Navigation/Navigation.css);
+
+@import url(./components/Main/Promo/Promo.css);
+@import url(./components/Main/NavTab/NavTab.css);
+@import url(./components/Main/AboutProject/AboutProject.css);
+@import url(./components/Main/ProgressionBar/ProgressionBar.css);
+@import url(./components/Main/Techs/Techs.css);
+@import url(./components/Main/AboutProjectInfo/AboutProjectInfo.css);
+@import url(./components/Main/AboutMe/AboutMe.css);
+@import url(./components/Main/Portfolio/Portfolio.css);
+
+@import url(./components/Footer/Footer.css);
+@import url(./components/ShortsCheckbox/ShortsCheckbox.css);
+@import url(./components/Movies/Movies.css);
+@import url(./components/SearchString/SearchString.css);
+@import url(./components/MoviesCardList/MoviesCardList.css);
+@import url(./components/MoviesCard/MoviesCard.css);
+@import url(./components/SavedMovies/SavedMovies.css);
+@import url(./components/ShowMoreButton/ShowMoreButton.css);
+
+@import url(./components/Register/Register.css);
+@import url(./components/Login/Login.css);
+@import url(./components/Profile/Profile.css);
+
+@import url(./components/Error/Error.css);
+
+@import url(./components/Popup/Popup.css);
+@import url(./components/MobileMenuButton/MobileMenuButton.css);
+@import url(./components/MobileMenuPopup/MobileMenuPopup.css);

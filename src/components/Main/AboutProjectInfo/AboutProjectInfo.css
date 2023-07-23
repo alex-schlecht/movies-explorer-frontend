@@ -1,0 +1,82 @@
+.about-project-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  column-gap: 40px;
+  margin-top: 70px;
+  margin-bottom: 110px;
+}
+
+.about-project-info__content {
+  display: block;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  max-width: 550px;
+}
+
+.about-project-info__heading {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  margin: 0 0 26px;
+  padding: 0;
+}
+
+.about-project-info__description {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .about-project-info {
+    margin-bottom: 93px;
+  }
+
+  .about-project-info__content {
+    max-width: 319px;
+  }
+
+  .about-project-info__heading {
+    margin-bottom: 22px;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .about-project-info__description {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 544px) {
+  .about-project-info {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 56px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+
+  .about-project-info__content {
+    max-width: 284px;
+    width: 100%;
+  }
+
+  .about-project-info__heading {
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 16px;
+  }
+
+  .about-project-info__description {
+    font-size: 11px;
+    line-height: 16px;
+  }
+}

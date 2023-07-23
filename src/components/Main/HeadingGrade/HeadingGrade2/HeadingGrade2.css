@@ -1,0 +1,21 @@
+.heading-grade-2 {
+  box-sizing: border-box;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+  color: #FFFFFF;
+  border-bottom: 1px solid #DADADA;
+  margin: 0;
+  padding: 0 0 23px;
+}
+
+@media screen and (max-width: 544px) {
+  .heading-grade-2 {
+    font-size: 18px;
+    line-height: 22px;
+    padding: 0 0 28px;
+  }
+}
