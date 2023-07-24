@@ -8,7 +8,7 @@ const AboutProjectInfo = ({ aboutProject }) => {
           <h3 className="about-project-info__heading">{item.name}</h3>
           <p className="about-project-info__description">{item.description}</p>
         </article>
-      ))};
+      ))}
     </div>
   );
 };

@@ -14,7 +14,7 @@
   left: 0;
 }
 
-.popup_visible {
+.popup-visible {
   pointer-events: all;
   opacity: 1;
 }

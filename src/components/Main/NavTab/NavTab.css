@@ -8,6 +8,7 @@
   list-style: none;
   column-gap: 10px;
   margin-bottom: 30px;
+  max-width: 100%;
   padding: 0;
 }
 
@@ -33,13 +34,13 @@
 @media screen and (max-width: 544px) {
   .navtab {
     column-gap: 6px;
-    margin-bottom: 5px;
+    margin-bottom: 17px;
   }
 
-  .navtab__item {
-    font-size: 10px;
-    line-height: 16px;
+  .navtab__link {
     width: 82px;
     height: 26px;
+    font-size: 10px;
+    line-height: 16px;
   }
 }

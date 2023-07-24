@@ -128,7 +128,7 @@
   opacity: .8;
 }
 
-.login__disabled_button {
+.login__disabled-button {
   background-color: #f8f8f8;
   color: #c2c2c2;
   cursor: default;

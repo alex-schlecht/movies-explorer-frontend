@@ -17,7 +17,7 @@
   grid-auto-rows: 36px;
 }
 
-.progression-bar__grid_titles {
+.progression-bar__grid-titles {
   grid-auto-rows: 17px;
 }
 
@@ -29,12 +29,12 @@
   text-align: center;
 }
 
-.progression-bar__progression_done {
+.progression-bar__progression-done {
   background-color: #3DDC84;
   color: #000000;
 }
 
-.progression-bar__progression_undone {
+.progression-bar__progression-undone {
   background: #303030;
   color: #FFFFFF;
 }

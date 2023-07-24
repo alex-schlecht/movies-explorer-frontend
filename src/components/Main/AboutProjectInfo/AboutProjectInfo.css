@@ -61,12 +61,13 @@
     flex-wrap: wrap;
     justify-content: center;
     row-gap: 56px;
+    column-gap: 0;
     margin-top: 60px;
     margin-bottom: 60px;
   }
-
+  
   .about-project-info__content {
-    max-width: 284px;
+    max-width: 544px;
     width: 100%;
   }
 

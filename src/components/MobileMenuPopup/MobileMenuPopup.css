@@ -17,7 +17,7 @@
   left: 0;
 }
 
-.mobile-menu-popup_visible {
+.mobile-menu-popup-visible {
   pointer-events: all;
   opacity: 1;
 }

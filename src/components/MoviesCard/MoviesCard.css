@@ -22,7 +22,7 @@
 .movies-card__content {
   display: flex;
   flex-direction: row;
-  column-gap: 26px;
+  justify-content: space-between;
 }
 
 .movies-card__heading {
@@ -61,6 +61,10 @@
   .movies-card__img {
     max-height: 168px;
   }
+
+  .movies-card__heading {
+    width: 210px;
+  }
 }
 
 .movies-card__add-bookmark {
@@ -78,11 +82,11 @@
   margin: 19px 14px 0 0;
 }
 
-.movies-card__add-bookmark_active {
+.movies-card__add-bookmark-active {
   background-color: #3DDC84;
 }
 
-.movies-card__bookmark_disabled {
+.movies-card__bookmark-disabled {
   background-image: url("../../images/ui/add-bookmark-icon-gray.svg");
   background-color: #313131;
 }

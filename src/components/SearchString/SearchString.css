@@ -6,6 +6,7 @@
   flex-direction: row;
   position: relative;
   background-color: #222222;
+  border-radius: 9px;
   padding: 19px 0 19px;
   margin: 0 0 69px;
 }
@@ -27,7 +28,6 @@
   outline: none;
   background: transparent;
   border: none;
-
   padding: 0;
 }
 
@@ -79,8 +79,8 @@
     flex-direction: column;
     margin-right: 4px;
     margin-left: 4px;
-    padding: 0px;
-    margin-bottom: 45px;
+    padding: 0;
+    height: 72px;
   }
 
   .search-string__search-icon {
@@ -89,11 +89,14 @@
 
   .search-string__container {
     border: none;
+    position: relative;
+    top: 20px;
   }
 
   .search-string__movie-input {
     padding-left: 19px;
     line-height: 22px;
+
   }
 
   .search-string__button {
@@ -101,7 +104,8 @@
   }
 
   .search-string__shorts-checkbox {
-    margin-top: 46px;
     justify-content: center;
+    position: relative;
+    top: 80px;
   }
 }

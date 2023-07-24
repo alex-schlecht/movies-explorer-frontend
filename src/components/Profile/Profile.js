@@ -24,7 +24,7 @@ const Profile = ({ resumeOfErrors = "Произошла ошибка при из
     formNameOfClass: "profile__form",
     labelNameOfClass: "profile__label",
     inputNameOfClass: "profile__input",
-    inputInvalidNameOfClass: "profile__input_invalid",
+    inputInvalidNameOfClass: "profile__input-invalid",
     textOfErrorNameOfClass: "profile__input-text-of-error",
     buttonNameOfClass: "profile__button",
     disabledButtonNameOfClass: "profile__disabled-button",

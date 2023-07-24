@@ -43,7 +43,7 @@ const Login = ({resumeOfErrors}) => {
     inputInvalidNameOfClass: "login__input-invalid",
     textOfErrorNameOfClass: "login__input-text-of-error",
     buttonNameOfClass: "login__button",
-    disabledButtonNameOfClass: "login__disabled_button",
+    disabledButtonNameOfClass: "login__disabled-button",
     fieldsetNameOfClass: "login__fieldset",
     resumeOfErrorsNameOfClass: "login__errors-resume"
   };

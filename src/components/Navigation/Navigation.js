@@ -20,7 +20,7 @@ const Navigation = ({loggedIn}) => {
           </li>
           <li>
             <NavLink 
-              className="navigation__link navigation__link_signin" 
+              className="navigation__link navigation__link-signin" 
               to="/signin"
             >
               Войти
@@ -33,11 +33,11 @@ const Navigation = ({loggedIn}) => {
 
   const LoggedIn = () => {
     return (
-      <nav className="navigation navigation_movies">
+      <nav className="navigation navigation__movies">
         <ul className="navigation__movies-list">
           <li>
             <NavLink
-              className={({isActive}) => `navigation__link navigation__movies-link ${isActive ? "navigation__link_active" : ""}`}
+              className={({isActive}) => `navigation__link navigation__movies-link ${isActive ? "navigation__link-active" : ""}`}
               to="/movies"
             >
               Фильмы
@@ -45,7 +45,7 @@ const Navigation = ({loggedIn}) => {
           </li>
           <li>
             <NavLink
-              className={({isActive}) => `navigation__link navigation__movies-link ${isActive ? "navigation__link_active" : ""}`}
+              className={({isActive}) => `navigation__link navigation__movies-link ${isActive ? "navigation__link-active" : ""}`}
               to="/saved-movies"
             >
               Сохранённые фильмы
@@ -68,5 +68,4 @@ const Navigation = ({loggedIn}) => {
     </>
   );   
 };
-
 export default Navigation;
