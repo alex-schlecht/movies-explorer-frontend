@@ -64,29 +64,35 @@
 
 @media screen and (max-width: 768px) {
   .search-string {
-
+    margin-bottom: 109px;
   }
 
   .search-string__shorts-checkbox {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     column-gap: 16px;
-
   }
 }
 
-@media screen and (max-width: 575px) {
+@media screen and (max-width: 544px) {
   .search-string {
+    flex-direction: column;
     margin-right: 4px;
     margin-left: 4px;
+    padding: 0px;
+    margin-bottom: 45px;
+  }
 
+  .search-string__search-icon {
+    display: none;
   }
 
   .search-string__container {
-
+    border: none;
   }
 
   .search-string__movie-input {
+    padding-left: 19px;
     line-height: 22px;
   }
 
@@ -95,6 +101,7 @@
   }
 
   .search-string__shorts-checkbox {
+    margin-top: 46px;
     justify-content: center;
   }
 }

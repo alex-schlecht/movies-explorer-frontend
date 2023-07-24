@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import useValidation from "../../hooks/useValidation";
 
-const Profile = () => {
+const Profile = ({ resumeOfErrors = "Произошла ошибка при изменении профиля"}) => {
   const [editProfileButton, setEditProfileButton] = useState(false);
-  const {inputValue, inputValid, inputInvalid, handleFormChange} = useValidation();
+  const {inputValue, inputInvalid, inputValid,  handleFormChange} = useValidation();
 
   const handleEditProfile = () => {
     setEditProfileButton(!editProfileButton);
@@ -79,7 +79,7 @@ const Profile = () => {
       <h1 className="profile__heading">Привет, Виталий!</h1>
       <form className={formClassSettings.formNameOfClass} onSubmit={handleSubmit} action="#">
         {formInputFields}
-        <span className={formClassSettings.resumeOfErrorsNameOfClass}>{editProfileButton && formClassSettings.resumeOfErrorsNameOfClass}</span>
+        <span className={formClassSettings.resumeOfErrorsNameOfClass}>{editProfileButton && resumeOfErrors}</span>
         {editProfileButton ? 
           (<button className={`${formClassSettings.buttonNameOfClass} ${inputValid ? "" : 
           formClassSettings.disabledButtonNameOfClass}`}>

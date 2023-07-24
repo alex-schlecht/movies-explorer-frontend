@@ -3,89 +3,70 @@ import { NavLink } from "react-router-dom";
 import MobileMenuButton from "../MobileMenuButton/MobileMenuButton";
 
 
-const Navigation = ({headerType}) => {
+const Navigation = ({loggedIn}) => {
+
+  const NotLoggedIn = () => {
+
+    return (
+      <nav className="navigation">
+        <ul className="navigation__unauthorized-links">
+          <li>
+            <NavLink 
+              className="navigation__link" 
+              to="/signup"
+            >
+              Регистрация
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              className="navigation__link navigation__link_signin" 
+              to="/signin"
+            >
+              Войти
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+    );
+  };
+
+  const LoggedIn = () => {
+    return (
+      <nav className="navigation navigation_movies">
+        <ul className="navigation__movies-list">
+          <li>
+            <NavLink
+              className={({isActive}) => `navigation__link navigation__movies-link ${isActive ? "navigation__link_active" : ""}`}
+              to="/movies"
+            >
+              Фильмы
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({isActive}) => `navigation__link navigation__movies-link ${isActive ? "navigation__link_active" : ""}`}
+              to="/saved-movies"
+            >
+              Сохранённые фильмы
+            </NavLink>
+          </li>
+        </ul>
+        <NavLink
+          className="navigation__link navigation__profile-link"
+          to="/profile"
+        >
+          Аккаунт<div className="navigation__profile-icon"></div>
+        </NavLink>
+      </nav>
+    );
+  };
 
   return (
     <>
-      {headerType === 'main'  && (
-        <nav className="navigation">
-          <ul className="navigation__unauthorized-links">
-            <li>
-              <NavLink 
-                className="navigation__link" 
-                to="/signup"
-              >
-                Регистрация
-              </NavLink>
-            </li>
-            <li>
-              <NavLink 
-                className="navigation__link navigation__link_signin" 
-                to="/signin"
-              >
-                Войти
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
-      )};
-
-      {headerType === 'non-authorized' && (
-        <nav className="navigation">
-          <ul className="navigation__unauthorized-links">
-            <li>
-              <NavLink 
-                className="navigation__link" 
-                to="/signup"
-              >
-                Регистрация
-              </NavLink>
-            </li>
-            <li>
-              <NavLink 
-                className="navigation__link navigation__link_signin" 
-                to="/signin"
-              >
-                Войти
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
-      )};
-
-      {headerType === 'authorized' && (
-        <nav className="navigation navigation_movies">
-          <ul className="navigation__movies-list">
-            <li>
-              <NavLink
-                className={({isActive}) => `navigation__link navigation__movies-link ${isActive ? "navigation__link_active" : ""}`}
-                to="/movies"
-              >
-                Фильмы
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className={({isActive}) => `navigation__link navigation__movies-link ${isActive ? "navigation__link_active" : ""}`}
-                to="/saved-movies"
-              >
-                Сохранённые фильмы
-              </NavLink>
-            </li>
-          </ul>
-          <NavLink
-            className="navigation__link navigation__profile-link"
-            to="/profile"
-          >
-            Аккаунт<div className="navigation__profile-icon"></div>
-          </NavLink>
-        </nav>
-      )};
-      {headerType === 'mobile' && (
-        <MobileMenuButton/>
-      )}
+      {loggedIn ? LoggedIn() : NotLoggedIn()}
     </>
-  );
+  );   
 };
 
 export default Navigation;

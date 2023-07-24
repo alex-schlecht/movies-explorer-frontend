@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import LogoLink from "../Header/LogoLink/LogoLink";
 import useValidation from "../../hooks/useValidation";
 
-const Login = ({loggedIn, resumeOfErrors}) => {
+const Login = ({resumeOfErrors}) => {
   const navigate = useNavigate();
-  const {inputValue, inputValid, inputInvalid, handleFormChange} = useValidation();
+  const {inputValue, inputInvalid, inputValid,  handleFormChange} = useValidation();
 
   const inputFields = [
     {
@@ -29,7 +29,6 @@ const Login = ({loggedIn, resumeOfErrors}) => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    loggedIn(true);
     navigate("/movies");
   };
 

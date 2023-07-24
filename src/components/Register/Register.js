@@ -5,7 +5,7 @@ import LogoLink from "../Header/LogoLink/LogoLink";
 
 const Register = ({resumeOfErrors}) => {
   const navigate = useNavigate();
-  const {inputValue, inputValid, inputInvalid, handleFormChange} = useValidation();
+  const {inputValue, inputInvalid, inputValid,  handleFormChange} = useValidation();
 
   const inputFields = [
     {

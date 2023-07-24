@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   max-width: 396px;
-  margin: 70px auto 0;
+  margin: 70px auto 70px;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -90,12 +90,12 @@
 }
 
 .login__input-invalid {
-  color: #ee3645;
-  border-bottom-color: #ee3645;
+  color: #EE3465;
+  border-bottom-color: #EE3465;
 }
 
 .login__input-text-of-error {
-  color: #ee3645;
+  color: #EE3465;
   font-size: 10px;
   line-height: 12px;
 }
@@ -105,7 +105,7 @@
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
-  color: #ee3645;
+  color: #EE3465;
 }
 
 .login__button {
@@ -136,20 +136,19 @@
 
 @media screen and (max-width: 768px) {
   .login {
-    margin-top: 232px;
+    margin: 232px auto 232px;
   }
 
   .login__button {
     font-size: 14px;
     line-height: 17px;
   }
-
 }
 
 @media screen and (max-width: 544px) {
   .login {
     max-width: 260px;
-    margin-top: 56px;
+    margin: 56px auto 30px;
   }
 
   .login__heading {

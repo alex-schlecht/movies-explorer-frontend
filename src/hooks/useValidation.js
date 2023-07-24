@@ -3,8 +3,8 @@ import { useState } from "react";
 function useValidation() {
   const [state, setState] = useState({
     inputValue: {},
-    inputValid: false,
-    inputInvalid: {}
+    inputInvalid: {},
+    inputValid: false
   });
 
   const handleFormChange = (event) => {
@@ -13,8 +13,8 @@ function useValidation() {
 
     setState({
       inputValue: {...state.inputValue, [name]: value},
-      inputValid: formValid,
       inputInvalid: {...state.inputInvalid, [name]: validationMsg},
+      inputValid: formValid
     });
   };
 

@@ -26,9 +26,10 @@
   }
 
   .promo__heading {
-    margin: 350px 24px 380px;
+    margin: 350px 24px 314px;
     font-size: 40px;
     line-height: 52px;
+    padding-top: 0;
   }
 }
 
@@ -40,6 +41,6 @@
   .promo__heading {
     font-size: 29px;
     line-height: 37px;
-    margin: 220px 0 255px;
+    margin: 220px 14px 212px;
   }
 }

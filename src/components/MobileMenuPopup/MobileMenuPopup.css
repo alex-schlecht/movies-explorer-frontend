@@ -36,12 +36,17 @@
   background-repeat: no-repeat;
   width: 22px;
   height: 22px;
+  transition: opacity .3s ease;
+}
+
+.mobile-menu-popup__button:hover {
+  opacity: .7;
 }
 
 .mobile-menu-popup__container {
   max-width: 520px;
   margin-left: auto;
-  background-color: #ffffff;
+  background-color: #202020;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -70,7 +75,7 @@
 
 .mobile-menu-popup__link {
   text-decoration: none;
-  color: #000;
+  color: #FFFFFF;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,7 +97,7 @@
   bottom: -4px;
   left: 0;
   width: 100%;
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid #FFFFFF;
 }
 
 
@@ -112,12 +117,12 @@
   background-repeat: no-repeat;
   width: 30px;
   height: 30px;
-  background-color: #f4f4f4;
+  background-color: #313131;
   border-radius: 6px;
 }
 
 
-@media screen and (max-width: 575px) {
+@media screen and (max-width: 544px) {
   .mobile-menu-popup__button {
     right: 18px;
     top: 18px;

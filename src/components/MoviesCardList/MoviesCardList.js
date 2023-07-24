@@ -6,7 +6,7 @@ import ShowMoreButton from "../ShowMoreButton/ShowMoreButton";
 const MoviesCardList = ({locPath}) => {
   const addToBookmark = (card) => {
     return (
-      <button className={`movies-card__add-bookmark ${card.bookmark ? "movies-card__add-bookmark_active" : ""}`} type="button"></button>
+      <button className={`movies-card__add-bookmark ${card.bookmark ? "movies-card__add-bookmark_active" : "movies-card__bookmark_disabled"}`} type="button"></button>
     );
   };
 

@@ -17,9 +17,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentuser] = useState({});
-  const [headerType, setHeaderType] = useState('default');
   const [headerHide, setHeaderHide] = useState(true);
   const [footerHide, setFooterHide] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const allAuthRoutesHeader = ['/profile', '/movies', '/saved-movies'];
   const allRoutesHeader = ['/', '/movies', '/saved-movies', '/profile'];
@@ -45,40 +45,28 @@ function App() {
     }
   }, [location]);
 
-  useEffect(() => {
-    const width = window.innerWidth;
-  
-    if (width < 768) {
-      setHeaderType('mobile');
-    } else {
-      if (location.pathname === '/') {
-        setHeaderType('main');
-      }
-  
-      if (loggedIn) {
-        setHeaderType('authorized');
-      } else {
-        setHeaderType('non-authorized');
-      }
-    }
-  }, [location, loggedIn]);
+  const handleOpenMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const onClickOverlay = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <CurrentUser.Provider value={currentUser}>
       <div className="app">
-        {headerHide ? null : <Header headerType={headerType}/>} 
-
+        {headerHide ? null : <Header loggedIn={loggedIn} clickOpenMenu={handleOpenMenu}/>}
         <Routes>
           <Route path="/" element={<Main/>}/>
-          <Route path="/signin" element={<Login loggedIn={setLoggedIn}/>}/>
+          <Route path="/signin" element={<Login/>}/>
           <Route path="/signup" element={<Register/>}/>
           <Route path="/profile" element={<Profile/>}/>
-          <Route path="/movies" element={<Movies isLoading={isLoading}/>}/>
-          <Route path="/saved-movies" element={<SavedMovies isLoading={isLoading}/>}/>
+          <Route path="/movies" element={<Movies locPath={location.pathname} isLoading={isLoading}/>}/>
+          <Route path="/saved-movies" element={<SavedMovies locPath={location.pathname}/>}/>
           <Route path="*" element={<Error code="404" description="Страница не найдена"/>}/>
         </Routes>
         {footerHide ? null : <Footer/>}
-        {!loggedIn ? null : <MobileMenuPopup/> }
+        {!loggedIn ? null : <MobileMenuPopup isOpen={isMenuOpen} onClose={handleOpenMenu} onClickOverlay={onClickOverlay}/>}
       </div>  
     </CurrentUser.Provider>
   );

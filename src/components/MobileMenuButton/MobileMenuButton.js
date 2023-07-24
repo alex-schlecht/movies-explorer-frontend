@@ -1,19 +1,14 @@
 import React from "react";
-import MobileMenuPopup from "../MobileMenuPopup/MobileMenuPopup";
-import { useOpenPopup } from "../../hooks/useOpenPopup";
 
-const MobileMenuButton = () => {
-
-  const {openPopup, closePopup, isOpen} = useOpenPopup();
+const MobileMenuButton = ({clickOpenMenu}) => {
 
   return (
     <>
       <button 
         className="mobile-menu-button" 
         type="button" 
-        onClick={() => openPopup()}
+        onClick={clickOpenMenu}
       />
-      <MobileMenuPopup isOpen={openPopup} closePopup={closePopup}/>
     </>
   );
 };

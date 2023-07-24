@@ -64,6 +64,7 @@
   text-align: right;
   width: 100%;
   background-color: #202020;
+  color:#FFFFFF;
 }
 
 .profile__input:focus {
@@ -74,12 +75,12 @@
 
 
 .profile__input_invalid {
-  color: #ee3645;
+  color: #EE3465;
 }
 
 .profile__input-text-of-error {
   grid-column: 1 / span 2;
-  color: #ee3645;
+  color: #EE3465;
   font-size: 10px;
   line-height: 12px;
   height: 16px;
@@ -91,7 +92,7 @@
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
-  color: #ee3645;
+  color: #EE3465;
   text-align: center;
   height: 14px;
 }
@@ -132,6 +133,7 @@
   background-color: transparent;
   font-weight: 400;
   font-size: 13px;
+  color: #FFFFFF;
   line-height: 16px;
   cursor: pointer;
   transition: opacity .3s ease;
@@ -147,7 +149,7 @@
   line-height: 16px;
   text-decoration: none;
   transition: opacity .3s ease;
-  color: #ee3645;
+  color: #EE3465;
 }
 
 .profile__quit-red:hover {
@@ -168,7 +170,7 @@
   }
 }
 
-@media screen and (max-width: 575px) {
+@media screen and (max-width: 544px) {
   .profile {
     max-width: 260px;
     padding-top: 68px;

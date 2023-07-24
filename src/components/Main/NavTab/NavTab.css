@@ -7,7 +7,7 @@
   justify-content: center;
   list-style: none;
   column-gap: 10px;
-  margin: 0;
+  margin-bottom: 30px;
   padding: 0;
 }
 
@@ -24,7 +24,6 @@
   border-radius: 10px;
   width: 96px;
   height: 36px;
-  margin-bottom: 30px;
 }
 
 .navtab__item:hover {
@@ -34,7 +33,7 @@
 @media screen and (max-width: 544px) {
   .navtab {
     column-gap: 6px;
-    margin-bottom: 17px;
+    margin-bottom: 5px;
   }
 
   .navtab__item {

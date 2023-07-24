@@ -37,6 +37,7 @@
 @media screen and (max-width: 768px) {
   .about-project-info {
     margin-bottom: 93px;
+    column-gap: 30px;
   }
 
   .about-project-info__content {

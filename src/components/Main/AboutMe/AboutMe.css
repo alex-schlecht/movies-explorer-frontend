@@ -9,7 +9,6 @@
   margin: 0 0 18px;
 }
 
-
 .about-me__heading-grade-4 {
   margin-bottom: 26px;
 }
@@ -77,7 +76,7 @@
     line-height: 18px;
   }
 
-  .about-me__text {
+  .about-me__description {
     font-size: 12px;
     line-height: 18px;
   }
@@ -93,10 +92,10 @@
 
 @media screen and (max-width: 544px) {
   .about-me {
-    padding: 65px 14px 0;
+    padding: 70px 14px 0;
   }
 
-  .about-me__article {
+  .about-me__info {
     flex-wrap: wrap;
     flex-direction: column-reverse;
     justify-content: center;
@@ -107,7 +106,6 @@
   .about-me__photo {
     max-width: 292px;
     width: 100%;
-
   }
 
   .about-me__container {
@@ -125,7 +123,7 @@
     line-height: 16px;
   }
 
-  .about-me__text {
+  .about-me__description {
     font-size: 11px;
     line-height: 16px;
   }

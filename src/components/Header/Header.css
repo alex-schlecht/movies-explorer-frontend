@@ -1,17 +1,17 @@
 .header {
   display: flex;
   flex-direction: row;
-  padding: 18px 70px;
+  margin: 18px 70px 18px;
 }
 
 @media screen and (max-width: 768px) {
   .header {
-    padding: 18px 30px;
+    margin: 18px 30px 18px;
   }
 }
 
 @media screen and (max-width: 544px) {
   .header {
-    padding: 18px 14px;
+    margin: 18px 14px 18px;
   }
 }

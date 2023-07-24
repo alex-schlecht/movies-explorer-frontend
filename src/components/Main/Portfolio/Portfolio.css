@@ -13,6 +13,12 @@
   padding: 0;
 }
 
+.portfolio__project {
+  border-bottom: 1px solid #424242;
+  padding: 0 0 19px;
+  margin: 0 0 20px;
+}
+
 .portfolio__project-link {
   text-decoration: none;
   color: #ffffff;
@@ -27,12 +33,6 @@
 
 .portfolio__project-link:hover {
   opacity: .7;
-}
-
-.portfolio__project {
-  border-bottom: 1px solid #424242;
-  padding: 0 0 19px;
-  margin: 0 0 20px;
 }
 
 .portfolio__project:last-of-type {
@@ -53,7 +53,7 @@
 
 @media screen and (max-width: 768px) {
   .portfolio {
-    padding: 90px 50px 70px;
+    padding: 90px 50px 90px;
   }
 
   .portfolio__projects {
@@ -69,11 +69,6 @@
 @media screen and (max-width: 544px) {
   .portfolio {
     padding: 70px 14px;
-  }
-
-  .portfolio__title {
-    font-size: 14px;
-    line-height: 20px;
   }
 
   .portfolio__projects {
