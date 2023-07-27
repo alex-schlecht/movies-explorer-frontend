@@ -1,0 +1,70 @@
+.progression-bar {
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: 14px;
+}
+
+.progression-bar__grid {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 20% auto;
+  grid-auto-rows: 36px;
+}
+
+.progression-bar__grid-titles {
+  grid-auto-rows: 17px;
+}
+
+.progression-bar__progression {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.progression-bar__progression-done {
+  background-color: #3DDC84;
+  color: #000000;
+}
+
+.progression-bar__progression-undone {
+  background: #303030;
+  color: #FFFFFF;
+}
+
+.progression-bar__title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  color: #8B8B8B;
+}
+
+@media screen and (max-width: 768px) {
+  .progression-bar__grid {
+    grid-template-columns: 21% auto;
+  }
+}
+
+@media screen and (max-width: 544px) {
+  .progression-bar__grid {
+    grid-template-columns: 35% auto;
+  }
+
+  .progression-bar {
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .progression-bar__grid_titles {
+    grid-auto-rows: 5px;
+  }
+}

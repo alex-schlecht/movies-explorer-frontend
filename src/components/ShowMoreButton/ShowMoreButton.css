@@ -1,0 +1,43 @@
+.show-more-button {
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  max-width: 100%;
+}
+
+.show-more-button__button {
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0;
+  color: #ffffff;
+  background-color: #2F2F2F;
+  border: none;
+  cursor: pointer;
+  transition: opacity .3s ease;
+  max-width: 1140px;
+  width: 100%;
+}
+
+.show-more-button__button:hover {
+  opacity: .7;
+}
+
+@media screen and (max-width: 768px) {
+  .show-more-button {
+    margin-top: 50px;
+  }
+  .show-more-button__button {
+    width: 708px;
+  }
+}
+
+@media screen and (max-width: 544px) {
+  .show-more-button__button {
+    width: 300px;
+  }
+}

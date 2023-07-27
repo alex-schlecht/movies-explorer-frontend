@@ -1,1 +1,1 @@
-# movies-explorer-frontend
+Ссылка на макет: https://www.figma.com/file/vWqeAsj4YkO3qBuQBKHeKW/Diploma-(Copy)?type=design&node-id=932-3348&mode=design&t=w85oaX3f8P3M4K2P-0

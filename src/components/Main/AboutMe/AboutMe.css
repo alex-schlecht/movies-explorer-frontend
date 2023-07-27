@@ -1,0 +1,134 @@
+.about-me {
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  padding: 110px 70px 0;
+}
+
+.about-me__heading-grade-3 {
+  margin: 0 0 18px;
+}
+
+.about-me__heading-grade-4 {
+  margin-bottom: 26px;
+}
+
+.about-me__container {
+  max-width: 600px;
+  margin: 0;
+}
+
+.about-me__info {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 49px;
+  padding-top: 66px;
+}
+
+.about-me__description {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.about-me__links {
+  margin-top: 100px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.about-me__link {
+  text-decoration: none;
+  color: #ffffff;
+  transition: opacity .3s ease;
+}
+
+.about-me__link:hover {
+  opacity: .7;
+}
+
+.about-me__photo {
+  border-radius: 10px;
+  margin: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .about-me {
+    padding: 90px 50px 0;
+  }
+
+  .about-me__container {
+    max-width: 364px;
+  }
+
+  .about-me__heading-grade-3 {
+    font-size: 40px;
+    line-height: 40px;
+    margin-bottom: 16px;
+  }
+
+  .about-me__heading-grade-4 {
+    margin-bottom: 20px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-me__description {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-me__links {
+    margin-top: 87px;
+  }
+
+  .about-me__photo {
+    max-width: 255px;
+  }
+}
+
+@media screen and (max-width: 544px) {
+  .about-me {
+    padding: 70px 14px 0;
+  }
+
+  .about-me__info {
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    padding-top: 60px;
+  }
+
+  .about-me__photo {
+    max-width: 292px;
+    width: 100%;
+  }
+
+  .about-me__container {
+    margin-top: 40px;
+  }
+
+  .about-me__heading-grade-3 {
+    font-size: 30px;
+    line-height: 36px;
+    margin-bottom: 20px;
+  }
+
+  .about-me__heading-grade-4 {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about-me__description {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about-me__links {
+    margin-top: 40px;
+  }
+}
