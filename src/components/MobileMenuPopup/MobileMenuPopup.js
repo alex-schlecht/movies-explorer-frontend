@@ -1,7 +1,21 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { NavLink } from "react-router-dom";
 
 const MobileMenuPopup = ({isOpen, onClose, onClickOverlay}) => {
+  function handleEscClose(event) {
+    if (event.key === 'Escape') {
+      onClose();
+    }
+  }
+
+  useEffect(() => {
+    if (!isOpen) return;
+    document.addEventListener('keydown', handleEscClose);
+    return () => {
+      document.removeEventListener('keydown', handleEscClose);
+    };
+  }, [isOpen]);
+
   return (
     <div 
       className={`mobile-menu-popup ${isOpen ? "mobile-menu-popup-visible" : ""}`}

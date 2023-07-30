@@ -1,10 +1,10 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LogoLink from "../Header/LogoLink/LogoLink";
 import useValidation from "../../hooks/useValidation";
+import { pattern_email } from "../../constants/uriPattern";
 
-const Login = ({resumeOfErrors}) => {
-  const navigate = useNavigate();
+const Login = ({resumeOfErrors, onSignin, loggedIn, isLoading}) => {
   const {inputValue, inputInvalid, inputValid,  handleFormChange} = useValidation();
 
   const inputFields = [
@@ -13,6 +13,7 @@ const Login = ({resumeOfErrors}) => {
       id: "email",
       required: true,
       type: "email",
+      pattern: pattern_email,
       placeholder: "E-mail",
       label: "E-mail",
     },
@@ -29,7 +30,7 @@ const Login = ({resumeOfErrors}) => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    navigate("/movies");
+    onSignin(inputValue.email, inputValue.password);
   };
 
   function handleSelectField(event) {
@@ -81,7 +82,11 @@ const Login = ({resumeOfErrors}) => {
       <form className={formClassSettings.formNameOfClass} onSubmit={handleSubmit} action="#">
         {formInputFields}
         <span className={formClassSettings.resumeOfErrorsNameOfClass}>{resumeOfErrors}</span>
-        <button className={`${inputValid ? "" : formClassSettings.disabledButtonNameOfClass} ${formClassSettings.buttonNameOfClass}`}>
+        <button 
+          className={`${!loggedIn && (!isLoading && inputValid) ? "" : formClassSettings.disabledButtonNameOfClass} ${formClassSettings.buttonNameOfClass}`}
+          disabled={isLoading || !inputValid}
+          type="submit"
+        >
           Войти
         </button>
       </form>

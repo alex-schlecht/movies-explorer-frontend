@@ -51,6 +51,14 @@
   color: #a0a0a0;
 }
 
+.movies-card__link {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 @media screen and (max-width: 768px) {
   .movies-card__img {
     max-height: 190px;
