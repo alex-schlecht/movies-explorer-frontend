@@ -11,7 +11,8 @@ class Api {
   };
 
   _request(url, config) {
-    return fetch(`${this._appUrl}${url}`, config).then((res) => this._checkResponse(res));
+    return fetch(`${this._appUrl}${url}`, config)
+      .then((res) => this._checkResponse(res));
   };
 
   getMovies() {

@@ -29,6 +29,7 @@
 @import url(./components/MoviesCard/MoviesCard.css);
 @import url(./components/SavedMovies/SavedMovies.css);
 @import url(./components/ShowMoreButton/ShowMoreButton.css);
+@import url(./components/Tooltip/Tooltip.css);
 
 @import url(./components/Register/Register.css);
 @import url(./components/Login/Login.css);

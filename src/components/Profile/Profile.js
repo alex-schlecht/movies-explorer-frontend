@@ -128,7 +128,7 @@ const Profile = ({
                   onClick={handleSignOut}
                   type="button"
                 >
-                  Выход
+                  Выйти из аккаунта
                 </button>
               </nav>
             )

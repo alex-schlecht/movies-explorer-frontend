@@ -1,4 +1,3 @@
-import React from "react";
 import SearchString from "../SearchString/SearchString";
 import Preloader from "../Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
@@ -8,7 +7,7 @@ const Movies = ({
   isNewSearchAttempt,
   onSearchMovies,
   onIsNewSearchAttempt,
-  isMovieList,
+  movieList,
   onAddBookmark,
   onDeleteBookmark
 }) => {
@@ -24,7 +23,7 @@ const Movies = ({
           onDeleteBookmark={onDeleteBookmark}
           onIsNewSearchAttempt={onIsNewSearchAttempt}
           isNewSearchAttempt={isNewSearchAttempt}
-          movieList={isMovieList}
+          movieList={movieList}
         />)}
     </main>
   );

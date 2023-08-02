@@ -52,10 +52,10 @@
 }
 
 .movies-card__link {
-  height: 100%;
+  height: 203px;
   width: 100%;
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
 }
 
@@ -83,11 +83,13 @@
   border-radius: 50%;
   border: none;
   padding: 0;
-  background-image: url("../../images/ui/add-bookmark-icon-white.svg");
+  background-image: url("../../images/ui/add-bookmark-icon-gray.svg");
+  background-color: #313131;
   background-repeat: no-repeat;
   background-position: center;
   transition: opacity .3s ease;
   margin: 19px 14px 0 0;
+  
 }
 
 .movies-card__add-bookmark-active {

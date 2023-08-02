@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useReducer } from "react";
 import { Route, Routes, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { CurrentUser } from "../../context/CurrentUser";
 import Header from "../Header/Header";
@@ -19,6 +19,7 @@ import { SIGNUP_ERROR_TEXT, SIGNIN_ERROR_TEXT, PROFILE_ERROR_TEXT } from "../../
 import { searchMovies } from "../../utils/searchMovies";
 import { activeBookmarkMovieList } from "../../utils/activeBookmarkMovieList";
 import { formatImageUrl } from "../../utils/formatImageUrl";
+import { localStorageNames } from "../../constants/localStorageNames";
 
 function App() {
   const location = useLocation();
@@ -27,18 +28,32 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [movieList, setMovieList] = useReducer((_, next) => {
+    localStorage.setItem(localStorageNames.movieList, JSON.stringify(next));
+    return next;
+  }, JSON.parse(localStorage.getItem(localStorageNames.movieList)) || []);
 
+  const [bookmarkMovieList, setBookmarkMovieList] = useReducer((_, next) => {
+    localStorage.setItem(localStorageNames.bookmarkMovieList, JSON.stringify(next));
+    return next;
+  }, JSON.parse(localStorage.getItem(localStorageNames.bookmarkMovieList)) || []);
+
+  const [searchResult, setSearchResult] = useReducer((_, next) => {
+    localStorage.setItem(localStorageNames.searchResult, JSON.stringify(next));
+    return next;
+  }, JSON.parse(localStorage.getItem(localStorageNames.searchResult)) || []);
+
+  const [searchResultBookmark, setSearchResultBookmark] = useReducer((_, next) => {
+    localStorage.setItem(localStorageNames.searchResultBookmark, JSON.stringify(next));
+    return next;
+  }, JSON.parse(localStorage.getItem(localStorageNames.searchResultBookmark)) || []);
+
+  const [isBookmarkSearchMovieList, setIsBookmarkSearchMovieList] = useState(false);
+  const [isNewSearchAttempt, setIsNewSearchAttempt] = useState(false);
+  const [profileEditButton, setProfileEditButton] = useState(false);
   const [tooltipResponseType, setTooltipResponseType] = useState('');
   const [tooltipResponseText, setTooltipResponseText] = useState('');
   const [tooltipPopupOpen, setTootipPopupOpen] = useState(false);
-
-  const [searchResultMovieList, setSearchResultMovieList] = useState([]);
-  const [bookmarkMovieList, setBookmarkMovieList] = useState([]);
-  const [searchResultBookmarkMovieList, setSearchResultBookmarkMovieList] = useState([]);
-  const [isBookmarkSearchMovieList, setIsBookmarkSearchMovieList] = useState(false);
-
-  const [profileEditButton, setProfileEditButton] = useState(false);
-  const [isNewSearchAttempt, setIsNewSearchAttempt] = useState(false);
 
   const allRoutesHeader = ['/', '/movies', '/saved-movies', '/profile'];
   const allRoutesFooter = ['/', '/movies', '/saved-movies'];
@@ -110,9 +125,9 @@ function App() {
       .then((res) => {
         setLoggedIn(false);
         setCurrentUser({});
-        setSearchResultMovieList([]);
+        setSearchResult([]);
         setBookmarkMovieList([]);
-        setSearchResultBookmarkMovieList([]);
+        setSearchResultBookmark([]);
         setIsBookmarkSearchMovieList(false);
         localStorage.clear();
         navigate('/', { replace: true });
@@ -121,18 +136,10 @@ function App() {
   }, []);
 
   const getMovies = () => {
-    let localStorageBookmarkMovieList = JSON.parse(localStorage.getItem("bookmarkMovieList")) || [];
-    const localStorageSearchResultMovieList = JSON.parse(localStorage.getItem("searchResultMovieList")) || [];
-    setSearchResultMovieList(localStorageSearchResultMovieList);
-    const parseInputValue = JSON.parse(localStorage.getItem("bookmarkInputValue")) || {};
-    const checkboxValue = parseInputValue["shorts-checkbox__checkbox"] || false;
-    const searchStringValue = parseInputValue["search-string__name"] || "";
-
-    if (localStorageBookmarkMovieList.length === 0) {
+    setSearchResult(searchResult);
+    if (bookmarkMovieList.length === 0) {
       AppApi.getBookmarks()
         .then((res) => {
-          localStorageBookmarkMovieList = res;
-          localStorage.setItem("bookmarkMovieList", JSON.stringify(res));
           setBookmarkMovieList(res);
         })
           .catch(() => {
@@ -141,37 +148,137 @@ function App() {
           setTootipPopupOpen(true);
         });
     } else {
-      setBookmarkMovieList(localStorageBookmarkMovieList);
-    };
+      setBookmarkMovieList(bookmarkMovieList);
+    }
 
-    if (localStorageBookmarkMovieList.length > 0) {
-      const localStorageSearchResultBookmarkList = JSON.parse(localStorage.getItem("searchResultBookmarkMovieList")) || [];
-      if (localStorageSearchResultBookmarkList.length > 0 || (searchStringValue || checkboxValue > 0)) {
-        setSearchResultBookmarkMovieList(localStorageSearchResultBookmarkList);
+    const parseInputValue = JSON.parse(localStorage.getItem("inputValueBookmark")) || {};
+    const checkboxValue = parseInputValue["shorts-checkbox__checkbox"] || false;
+    const searchStringValue = parseInputValue["search-string__name"] || "";
+
+    if (bookmarkMovieList.length > 0) {
+      setSearchResultBookmark(searchResultBookmark);
+      if (searchResultBookmark.length > 0 || (searchStringValue || checkboxValue > 0)) {
+        setSearchResultBookmark(searchResultBookmark);
         setIsBookmarkSearchMovieList(true);
       };
     };
   };
 
+  const handleSearchMovies = (stringValue, checkboxState) => {
+    if (stringValue.length === 0) {
+      return;
+    }
+    setIsLoading(true);
+    setIsNewSearchAttempt(true);
+
+    if (movieList.length === 0) {
+      MoviesApi.getMovies()
+        .then((movies) => {
+          const editedMovieList = activeBookmarkMovieList(movies, bookmarkMovieList);
+          setMovieList(editedMovieList);
+          const filteredResult = searchMovies(editedMovieList, stringValue, checkboxState);
+          setSearchResult(filteredResult);
+        })
+        .catch((err) => {
+          setTooltipResponseType("error");
+          setTooltipResponseText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!');
+          setTootipPopupOpen(true);
+          console.log(err);
+        })
+        .finally(() => setIsLoading(false));
+    } else {
+      const localStorageSearchResultMovieList = searchMovies(movieList, stringValue, checkboxState);
+      setSearchResult(localStorageSearchResultMovieList);
+      setIsLoading(false);
+    };
+  };
+
   const handleBookmarkSearch = (stringValue, checkboxState) => {
     setIsLoading(true);
-    const localStorageBookmarkMovieList = JSON.parse(localStorage.getItem("bookmarkMovieList")) || [];
-    const localStorageSearchResultBookmarkList = searchMovies(localStorageBookmarkMovieList, stringValue, checkboxState);
-    localStorage.setItem("searchResultBookmarkMovieList", JSON.stringify(localStorageSearchResultBookmarkList));
-    setSearchResultBookmarkMovieList(localStorageSearchResultBookmarkList);
+    setBookmarkMovieList(bookmarkMovieList);
+    const filteredResultBookmark = searchMovies(bookmarkMovieList, stringValue, checkboxState);
+    setBookmarkMovieList(filteredResultBookmark);
     if (stringValue.length === 0 && !checkboxState) {
       setIsBookmarkSearchMovieList(false);
     } else {
       setIsBookmarkSearchMovieList(true);
-    }
+    };
     setIsLoading(false);
   };
 
   const handleResetBookmarkSearchForm = () => {
-    localStorage.removeItem('bookmarkInputValue');
-    localStorage.removeItem('searchResultBookmarkMovieList');
+    localStorage.removeItem('inputValueBookmark');
+    localStorage.removeItem('searchResultBookmark');
     setIsBookmarkSearchMovieList(false);
   };
+
+  const handleBookmarkCreate = useCallback((movie) => {
+    const bookmarkMovie = {
+      country: movie.country,
+      director: movie.director,
+      duration: movie.duration,
+      year: movie.year,
+      description: movie.description,
+      image: formatImageUrl(movie.image.url),
+      trailer: movie.trailerLink,
+      thumbnail: formatImageUrl(movie.image.formats.thumbnail.url),
+      movieId: movie.id,
+      nameRU: movie.nameRU,
+      nameEN: movie.nameEN
+    };
+
+    AppApi.addBookmark(bookmarkMovie)
+    .then((res) => {
+      const connectedBookmarkMovieList = [...bookmarkMovieList, res];
+      console.log(connectedBookmarkMovieList);
+      setBookmarkMovieList(connectedBookmarkMovieList);
+      const searchResultMovieList = activeBookmarkMovieList(searchResult, connectedBookmarkMovieList);
+      setSearchResult(searchResultMovieList);
+
+      if (isBookmarkSearchMovieList) {
+        const parseInputValue = JSON.parse(localStorage.getItem("inputValueBookmark")) || {};
+        const searchStringValue = parseInputValue[ "search-string__name" ] || "";
+        const checkboxValue = parseInputValue[ "shorts-checkbox__checkbox" ] || false;
+        const localStorageSearchResultBookmarkMovie = searchMovies([res], searchStringValue, checkboxValue);
+        if (localStorageSearchResultBookmarkMovie.length > 0) {
+          setSearchResultBookmark(searchResultBookmark);
+          const connectedBookmarkMovieList = [...searchResultBookmark, res];
+          setSearchResultBookmark(connectedBookmarkMovieList);
+        }
+      };
+    })
+    .catch((err) => {
+      console.log(err);
+
+      setTooltipResponseType("error");
+      setTooltipResponseText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!');
+      setTootipPopupOpen(true);
+    });
+  }, [bookmarkMovieList, searchResult]);
+
+  const handleBookmarkDelete = useCallback((movie) => {
+    const idMovie = movie.id || movie.movieId;
+    AppApi.deleteBookmark(movie._id)
+      .then(() => {
+        const connectedBookmarkMovieList = bookmarkMovieList.filter((movie) => {
+          return movie.movieId !== idMovie;
+        });
+        setBookmarkMovieList(connectedBookmarkMovieList);
+        const filteredBookmarkMovieList = activeBookmarkMovieList(searchResult, connectedBookmarkMovieList);
+        setSearchResultBookmark(filteredBookmarkMovieList);
+        if (searchResultBookmark) {
+          const filteredSearchResultBookmark = searchResultBookmark.filter((movie) => {
+            return movie.movieId !== idMovie;
+          });
+          setSearchResultBookmark(filteredSearchResultBookmark);
+        };
+      })
+      .catch((err) => {
+        setTooltipResponseType("error");
+        setTooltipResponseText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!');
+        setTootipPopupOpen(true);
+      });
+  }, [bookmarkMovieList, searchResult]);
 
   const handleSignup = (email, password, name) => {
     setIsLoading(true);
@@ -199,127 +306,6 @@ function App() {
     setIsMenuOpen(false);
     setTootipPopupOpen(false);
   };
-
-  const handleBookmarkCreate = useCallback((movie) => {
-    const bookmarkMovie = {
-      country: movie.country,
-      director: movie.director,
-      duration: movie.duration,
-      year: movie.year,
-      description: movie.description,
-      image: formatImageUrl(movie.image.url),
-      trailer: movie.trailerLink,
-      thumbnail: formatImageUrl(movie.image.formats.thumbnail.url),
-      movieId: movie.id,
-      nameRU: movie.nameRU,
-      nameEN: movie.nameEN
-    };
-
-    AppApi.addBookmark(bookmarkMovie)
-    .then((res) => {
-      const localStorageMovieList = JSON.parse(localStorage.getItem("movieList")) || [];
-      const localStorageSearchResultMovieList = JSON.parse(localStorage.getItem("searchResultMovieList")) || [];
-      const localStorageBookmarkMovieList = JSON.parse(localStorage.getItem("bookmarkMovieList")) || [];
-
-      const localStorageConnectedBookmarkMoviesList = [...localStorageBookmarkMovieList, res];
-      localStorage.setItem('bookmarkMovieList', JSON.stringify(localStorageConnectedBookmarkMoviesList));
-      setBookmarkMovieList(localStorageConnectedBookmarkMoviesList);
-
-      const localStorageResultBookmarkMovieList = activeBookmarkMovieList(localStorageSearchResultMovieList, localStorageConnectedBookmarkMoviesList);
-      localStorage.setItem('searchResultMovieList', JSON.stringify(localStorageResultBookmarkMovieList));
-      setSearchResultMovieList(localStorageResultBookmarkMovieList);
-
-      const localStorageActiveBookmarkMovieList = activeBookmarkMovieList(localStorageMovieList, localStorageConnectedBookmarkMoviesList);
-      localStorage.setItem('movieList', JSON.stringify(localStorageActiveBookmarkMovieList));
-      if (isBookmarkSearchMovieList) {
-        const parseInputValue = JSON.parse(localStorage.getItem("bookmarkInputValue")) || {};
-        const searchStringValue = parseInputValue[ "search-string__name" ] || "";
-        const checkboxValue = parseInputValue[ "shorts-checkbox__checkbox" ] || false;
-        const localStorageSearchResultBookmarkMovie = searchMovies([res], searchStringValue, checkboxValue);
-        if (localStorageSearchResultBookmarkMovie.length > 0) {
-          const localStorageSearchResultBookmarkList = JSON.parse(localStorage.getItem('searchResultBookmarkMovieList')) || [];
-          const localStorageResultConnectedBookmarkMoviesList = [...localStorageSearchResultBookmarkList, res];
-          localStorage.setItem('searchResultBookmarkMovieList', JSON.stringify(localStorageResultConnectedBookmarkMoviesList));
-          setSearchResultBookmarkMovieList(localStorageResultConnectedBookmarkMoviesList);
-        }
-      }
-    })
-      .catch((err) => {
-        console.log(err);
-        setTooltipResponseType("error");
-        setTooltipResponseText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!');
-        setTootipPopupOpen(true);
-      });
-    }, [bookmarkMovieList, searchResultMovieList]);
-
-    const handleSearchMovies = (stringValue, checkboxState) => {
-      if (stringValue.length === 0) {
-        return;
-      }
-
-      setIsLoading(true);
-      setIsNewSearchAttempt(true);
-      const localStorageMovieList = JSON.parse(localStorage.getItem("movieList")) || [];
-
-      if (localStorageMovieList.length === 0) {
-        MoviesApi.getMovies()
-          .then((res) => {
-            const localStorageActiveBookmarkMovieList = activeBookmarkMovieList(res, bookmarkMovieList);
-            localStorage.setItem('movieList', JSON.stringify(localStorageActiveBookmarkMovieList));
-            const searchResultMovieList = searchMovies(localStorageActiveBookmarkMovieList, stringValue, checkboxState);
-            localStorage.setItem('searchResultMovieList', JSON.stringify(searchResultMovieList));
-            setSearchResultMovieList(searchResultMovieList);
-          })
-          .catch((err) => {
-            setTooltipResponseType("error");
-            setTooltipResponseText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!');
-            setTootipPopupOpen(true);
-            console.log(err);
-          })
-          .finally(() => setIsLoading(false));
-      } else {
-        const localStorageSearchResultMovieList = searchMovies(localStorageMovieList, stringValue, checkboxState);
-        localStorage.setItem('searchResultMovieList', JSON.stringify(localStorageSearchResultMovieList));
-        setSearchResultMovieList(localStorageSearchResultMovieList);
-        setIsLoading(false);
-      };
-    };
-
-  const handleBookmarkDelete = useCallback((movie) => {
-    const id = movie.id || movie.movieId;
-    AppApi.deleteBookmark(movie._id).then(() => {
-      const localStorageMovieList = JSON.parse(localStorage.getItem("movieList")) || [];
-      const localStorageSearchResultMovieList = JSON.parse(localStorage.getItem("searchResultMovieList")) || [];
-      const localStorageBookmarkMovieList = JSON.parse(localStorage.getItem("bookmarkMovieList")) || [];
-
-      const localStorageConnectedBookmarkMoviesList = localStorageBookmarkMovieList.filter((movie) => {
-        return movie.movieId !== id;
-      });
-      setBookmarkMovieList(localStorageConnectedBookmarkMoviesList);
-      localStorage.setItem('bookmarkMovieList', JSON.stringify(localStorageConnectedBookmarkMoviesList));
-
-      const localStorageActiveBookmarkMovieList = activeBookmarkMovieList(localStorageSearchResultMovieList, localStorageConnectedBookmarkMoviesList);
-      localStorage.setItem('movieList', JSON.stringify(localStorageActiveBookmarkMovieList));
-
-      const localMarkedResultSearchMovieList = activeBookmarkMovieList(localStorageMovieList, localStorageConnectedBookmarkMoviesList);
-      localStorage.setItem('searchResultMovieList', JSON.stringify(localMarkedResultSearchMovieList));
-      setSearchResultBookmarkMovieList(localStorageActiveBookmarkMovieList);
-      const localStorageSearchResultBookmarkList = JSON.parse(localStorage.getItem("searchResultBookmarkMovieList")) || [];
-      if (localStorageSearchResultBookmarkList) {
-        const localConnectedSearchBookmarkMoviesList = localStorageSearchResultBookmarkList.filter((movie) => {
-          return movie.movieId !== id;
-        });
-        setSearchResultBookmarkMovieList(localConnectedSearchBookmarkMoviesList);
-        localStorage.setItem('searchResultBookmarkMovieList', JSON.stringify(localConnectedSearchBookmarkMoviesList));
-
-      }
-    }).catch((err) => {
-      setTooltipResponseType("error");
-      setTooltipResponseText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!');
-      setTootipPopupOpen(true);
-    });
-  }, [bookmarkMovieList, searchResultMovieList]);
-
 
   return (
     <CurrentUser.Provider value={currentUser}>
@@ -359,12 +345,13 @@ function App() {
             element={<ProtectedRoute
               path="/movies"
               element={Movies}
+              movieList={movieList}
               isLoading={isLoading}
               loggedIn={loggedIn}
               isNewSearchAttempt={isNewSearchAttempt}
               onSearchMovies={handleSearchMovies}
               onIsNewSearchAttempt={setIsNewSearchAttempt}
-              isMovieList={searchResultMovieList}
+              isMovieList={searchResult}
               onAddBookmark={handleBookmarkCreate}
               onDeleteBookmark={handleBookmarkDelete}
             />}
@@ -379,7 +366,7 @@ function App() {
               onSearchMovies={handleBookmarkSearch}
               onDeleteBookmark={handleBookmarkDelete}
               onResetBookmarkSearchForm={handleResetBookmarkSearchForm}
-              isMovieList={isBookmarkSearchMovieList ? searchResultBookmarkMovieList : bookmarkMovieList}
+              isMovieList={isBookmarkSearchMovieList ? searchResultBookmark : bookmarkMovieList}
               isBookmarkSearchMovieList={isBookmarkSearchMovieList}
             />}
           />

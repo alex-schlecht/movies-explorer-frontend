@@ -28,7 +28,7 @@ const MoviesCardList = ({movieList, isNewSearchAttempt, onIsNewSearchAttempt, is
   const { width } = useResize();
 
   useEffect(() => {
-    const localStorageKey = location.pathname === "/movies" ? "inputValuesMovies" : "inputValuesFavoriteMovies";
+    const localStorageKey = location.pathname === "/movies" ? "inputValueMovies" : "inputValueBookmark";
     const parseValue = JSON.parse(localStorage.getItem(localStorageKey)) || {};
     if (parseValue?.hasOwnProperty("search-string__movie") && renderMoviesArray && renderMoviesArray.length === 0) {
       setRememberSearch(true);
