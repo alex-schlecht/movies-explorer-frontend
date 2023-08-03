@@ -24,7 +24,7 @@ const MoviesCard = ({movie, onAddBookmark, onDeleteBookmark}) => {
   };
 
   const removeBookmarkIcon = () => {
-    return (<button className={`movies-card__add-bookmark movies-card__delete-bookmark`}></button>)
+    return (<button className={`movies-card__add-bookmark movies-card__delete-bookmark`} type="button" onClick={handleDeleteBookmark}></button>)
   };
 
   const renderButton = () => {

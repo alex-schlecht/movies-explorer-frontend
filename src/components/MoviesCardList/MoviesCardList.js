@@ -18,13 +18,10 @@ import {
 
 const MoviesCardList = ({movieList, isNewSearchAttempt, onIsNewSearchAttempt, isBookmarkSearchMovieList, onDeleteBookmark, onAddBookmark}) => {
   const location = useLocation();
-  
   const [loadLimit, setLoadLimit] = useState(0);
   const [loadMoreQuant, setLoadMoreQuant] = useState(0);
   const [renderMoviesArray, setRenderMoviesArray] = useState([]);
-
   const [rememberSearch, setRememberSearch] = useState(false);
-
   const { width } = useResize();
 
   useEffect(() => {

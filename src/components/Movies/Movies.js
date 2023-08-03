@@ -7,7 +7,7 @@ const Movies = ({
   isNewSearchAttempt,
   onSearchMovies,
   onIsNewSearchAttempt,
-  movieList,
+  isMovieList,
   onAddBookmark,
   onDeleteBookmark
 }) => {
@@ -23,7 +23,7 @@ const Movies = ({
           onDeleteBookmark={onDeleteBookmark}
           onIsNewSearchAttempt={onIsNewSearchAttempt}
           isNewSearchAttempt={isNewSearchAttempt}
-          movieList={movieList}
+          movieList={isMovieList}
         />)}
     </main>
   );

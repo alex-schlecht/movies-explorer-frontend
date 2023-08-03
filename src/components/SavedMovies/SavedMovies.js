@@ -3,7 +3,7 @@ import SearchString from "../SearchString/SearchString";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
 const SavedMovies = ({
-  bookmarkMovieList,
+  isMovieList,
   onSearchMovies,
   onDeleteBookmark,
   isInput,
@@ -18,7 +18,7 @@ const SavedMovies = ({
         onResetBookmarkSearchForm={onResetBookmarkSearchForm}
       />
       <MoviesCardList 
-        bookmarkMovieList={bookmarkMovieList}
+        movieList={isMovieList}
         isBookmarkSearchMovieList={isBookmarkSearchMovieList}
         onDeleteBookmark={onDeleteBookmark}
       />

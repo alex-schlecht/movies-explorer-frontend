@@ -19,7 +19,6 @@ import { SIGNUP_ERROR_TEXT, SIGNIN_ERROR_TEXT, PROFILE_ERROR_TEXT } from "../../
 import { searchMovies } from "../../utils/searchMovies";
 import { activeBookmarkMovieList } from "../../utils/activeBookmarkMovieList";
 import { formatImageUrl } from "../../utils/formatImageUrl";
-import { localStorageNames } from "../../constants/localStorageNames";
 
 function App() {
   const location = useLocation();
@@ -28,26 +27,9 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [movieList, setMovieList] = useReducer((_, next) => {
-    localStorage.setItem(localStorageNames.movieList, JSON.stringify(next));
-    return next;
-  }, JSON.parse(localStorage.getItem(localStorageNames.movieList)) || []);
-
-  const [bookmarkMovieList, setBookmarkMovieList] = useReducer((_, next) => {
-    localStorage.setItem(localStorageNames.bookmarkMovieList, JSON.stringify(next));
-    return next;
-  }, JSON.parse(localStorage.getItem(localStorageNames.bookmarkMovieList)) || []);
-
-  const [searchResult, setSearchResult] = useReducer((_, next) => {
-    localStorage.setItem(localStorageNames.searchResult, JSON.stringify(next));
-    return next;
-  }, JSON.parse(localStorage.getItem(localStorageNames.searchResult)) || []);
-
-  const [searchResultBookmark, setSearchResultBookmark] = useReducer((_, next) => {
-    localStorage.setItem(localStorageNames.searchResultBookmark, JSON.stringify(next));
-    return next;
-  }, JSON.parse(localStorage.getItem(localStorageNames.searchResultBookmark)) || []);
-
+  const [bookmarkMovieList, setBookmarkMovieList] = useState([]);
+  const [searchResult, setSearchResult] = useState([]);
+  const [searchResultBookmark, setSearchResultBookmark] = useState([]);
   const [isBookmarkSearchMovieList, setIsBookmarkSearchMovieList] = useState(false);
   const [isNewSearchAttempt, setIsNewSearchAttempt] = useState(false);
   const [profileEditButton, setProfileEditButton] = useState(false);
@@ -99,8 +81,6 @@ function App() {
     getMovies();
   };
 
-  const handleProfileEditButton = (state) => setProfileEditButton(state);
-
   const handleProfileUpdate = (name, email) => {
     AppApi.profileUpdate(name, email)
       .then((res) => {
@@ -120,6 +100,8 @@ function App() {
       }).finally(() => setTootipPopupOpen(true));
   };
 
+  const handleProfileEditButton = (state) => setProfileEditButton(state);
+
   const handleSignout = useCallback(() => {
     AppApi.signout()
       .then((res) => {
@@ -136,10 +118,15 @@ function App() {
   }, []);
 
   const getMovies = () => {
-    setSearchResult(searchResult);
-    if (bookmarkMovieList.length === 0) {
+
+    let bookmarkMovieListLocal = JSON.parse(localStorage.getItem("bookmarkMovieList")) || [];
+    const searchResultLocal = JSON.parse(localStorage.getItem("searchResult")) || [];
+    setSearchResult(searchResultLocal);
+    if (bookmarkMovieListLocal.length === 0) {
       AppApi.getBookmarks()
         .then((res) => {
+          bookmarkMovieListLocal = res;
+          localStorage.setItem("bookmarkMovieList", JSON.stringify(res));
           setBookmarkMovieList(res);
         })
           .catch(() => {
@@ -148,17 +135,17 @@ function App() {
           setTootipPopupOpen(true);
         });
     } else {
-      setBookmarkMovieList(bookmarkMovieList);
+      setBookmarkMovieList(bookmarkMovieListLocal);
     }
 
     const parseInputValue = JSON.parse(localStorage.getItem("inputValueBookmark")) || {};
     const checkboxValue = parseInputValue["shorts-checkbox__checkbox"] || false;
     const searchStringValue = parseInputValue["search-string__name"] || "";
 
-    if (bookmarkMovieList.length > 0) {
-      setSearchResultBookmark(searchResultBookmark);
-      if (searchResultBookmark.length > 0 || (searchStringValue || checkboxValue > 0)) {
-        setSearchResultBookmark(searchResultBookmark);
+    if (bookmarkMovieListLocal.length > 0) {
+      const searchResultBookmarkMovieListLocal = JSON.parse(localStorage.getItem("searchResultBookmark")) || [];
+      if (searchResultBookmarkMovieListLocal.length > 0 || (searchStringValue || checkboxValue > 0)) {
+        setSearchResultBookmark(searchResultBookmarkMovieListLocal);
         setIsBookmarkSearchMovieList(true);
       };
     };
@@ -170,13 +157,14 @@ function App() {
     }
     setIsLoading(true);
     setIsNewSearchAttempt(true);
-
-    if (movieList.length === 0) {
+    const localMovieList = JSON.parse(localStorage.getItem("movieList")) || [];
+    if (localMovieList.length === 0) {
       MoviesApi.getMovies()
-        .then((movies) => {
-          const editedMovieList = activeBookmarkMovieList(movies, bookmarkMovieList);
-          setMovieList(editedMovieList);
+        .then((res) => {
+          const editedMovieList = activeBookmarkMovieList(res, bookmarkMovieList);
+          localStorage.setItem('movieList', JSON.stringify(editedMovieList));
           const filteredResult = searchMovies(editedMovieList, stringValue, checkboxState);
+          localStorage.setItem('searchResult', JSON.stringify(filteredResult));
           setSearchResult(filteredResult);
         })
         .catch((err) => {
@@ -187,7 +175,8 @@ function App() {
         })
         .finally(() => setIsLoading(false));
     } else {
-      const localStorageSearchResultMovieList = searchMovies(movieList, stringValue, checkboxState);
+      const localStorageSearchResultMovieList = searchMovies(localMovieList, stringValue, checkboxState);
+      localStorage.setItem('searchResult', JSON.stringify(localStorageSearchResultMovieList));
       setSearchResult(localStorageSearchResultMovieList);
       setIsLoading(false);
     };
@@ -195,9 +184,11 @@ function App() {
 
   const handleBookmarkSearch = (stringValue, checkboxState) => {
     setIsLoading(true);
-    setBookmarkMovieList(bookmarkMovieList);
-    const filteredResultBookmark = searchMovies(bookmarkMovieList, stringValue, checkboxState);
-    setBookmarkMovieList(filteredResultBookmark);
+    const bookmarkMovieListLocal = JSON.parse(localStorage.getItem("bookmarkMovieList")) || [];
+    const searchResultLocal = searchMovies(bookmarkMovieListLocal, stringValue, checkboxState);
+    localStorage.setItem("searchResultBookmark", JSON.stringify(searchResultLocal));
+    setSearchResultBookmark(searchResultLocal);
+
     if (stringValue.length === 0 && !checkboxState) {
       setIsBookmarkSearchMovieList(false);
     } else {
@@ -226,30 +217,40 @@ function App() {
       nameRU: movie.nameRU,
       nameEN: movie.nameEN
     };
-
+    
     AppApi.addBookmark(bookmarkMovie)
     .then((res) => {
-      const connectedBookmarkMovieList = [...bookmarkMovieList, res];
-      console.log(connectedBookmarkMovieList);
-      setBookmarkMovieList(connectedBookmarkMovieList);
-      const searchResultMovieList = activeBookmarkMovieList(searchResult, connectedBookmarkMovieList);
-      setSearchResult(searchResultMovieList);
+      const movieListLocal = JSON.parse(localStorage.getItem("movieList")) || [];
+      const searchResultLocal = JSON.parse(localStorage.getItem("searchResult")) || [];
+      const bookmarkMovieListLocal = JSON.parse(localStorage.getItem("bookmarkMovieList")) || [];
 
+      const connectedBookmarkMovieList = [...bookmarkMovieListLocal, res];
+      localStorage.setItem('bookmarkMovieList', JSON.stringify(connectedBookmarkMovieList));
+      setBookmarkMovieList(connectedBookmarkMovieList);
+
+      const activeBookmark = activeBookmarkMovieList(searchResultLocal, connectedBookmarkMovieList);
+      localStorage.setItem('searchResult', JSON.stringify(activeBookmark));
+      setSearchResult(activeBookmark);
+
+      const searchResultMovieList = activeBookmarkMovieList(movieListLocal, connectedBookmarkMovieList);
+      localStorage.setItem('movieList', JSON.stringify(searchResultMovieList));
+
+      setSearchResult(searchResultMovieList);
       if (isBookmarkSearchMovieList) {
         const parseInputValue = JSON.parse(localStorage.getItem("inputValueBookmark")) || {};
         const searchStringValue = parseInputValue[ "search-string__name" ] || "";
         const checkboxValue = parseInputValue[ "shorts-checkbox__checkbox" ] || false;
         const localStorageSearchResultBookmarkMovie = searchMovies([res], searchStringValue, checkboxValue);
         if (localStorageSearchResultBookmarkMovie.length > 0) {
-          setSearchResultBookmark(searchResultBookmark);
-          const connectedBookmarkMovieList = [...searchResultBookmark, res];
+          const searchResultBookmarkMovieListLocal = JSON.parse(localStorage.getItem('searchResultBookmark')) || [];
+          const connectedBookmarkMovieList = [...searchResultBookmarkMovieListLocal, res];
+          localStorage.setItem("searchResultBookmark", JSON.stringify(connectedBookmarkMovieList));
           setSearchResultBookmark(connectedBookmarkMovieList);
         }
       };
     })
     .catch((err) => {
       console.log(err);
-
       setTooltipResponseType("error");
       setTooltipResponseText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз!');
       setTootipPopupOpen(true);
@@ -257,20 +258,31 @@ function App() {
   }, [bookmarkMovieList, searchResult]);
 
   const handleBookmarkDelete = useCallback((movie) => {
-    const idMovie = movie.id || movie.movieId;
+    const MovId = movie.id || movie.movieId;
     AppApi.deleteBookmark(movie._id)
       .then(() => {
-        const connectedBookmarkMovieList = bookmarkMovieList.filter((movie) => {
-          return movie.movieId !== idMovie;
+        const movieListLocal = JSON.parse(localStorage.getItem("movieList")) || [];
+        const bookmarkMovieListLocal = JSON.parse(localStorage.getItem("bookmarkMovieList")) || [];
+        const searchResultMovieListLocal = JSON.parse(localStorage.getItem("searchResult")) || [];
+        
+        const connectedBookmarkMovieList = bookmarkMovieListLocal.filter((movie) => {
+          return movie.movieId !== MovId;
         });
+
         setBookmarkMovieList(connectedBookmarkMovieList);
-        const filteredBookmarkMovieList = activeBookmarkMovieList(searchResult, connectedBookmarkMovieList);
-        setSearchResultBookmark(filteredBookmarkMovieList);
-        if (searchResultBookmark) {
-          const filteredSearchResultBookmark = searchResultBookmark.filter((movie) => {
-            return movie.movieId !== idMovie;
+        localStorage.setItem("bookmarkMovieList", JSON.stringify(connectedBookmarkMovieList));
+        const filteredBookmarkMovieList = activeBookmarkMovieList(movieListLocal, connectedBookmarkMovieList);
+        localStorage.setItem("movieList", JSON.stringify(filteredBookmarkMovieList));
+        const searchResultBookmarkMovieList = activeBookmarkMovieList(searchResultMovieListLocal, connectedBookmarkMovieList);
+        localStorage.setItem("searchResult", JSON.stringify(searchResultBookmarkMovieList));
+        setSearchResult(searchResultBookmarkMovieList);
+        const searchResultBookmarkMovieListLocal = JSON.parse(localStorage.getItem("searchResultBookmark")) || [];
+        if (searchResultBookmarkMovieListLocal) {
+          const filteredSearchResultBookmark = searchResultBookmarkMovieListLocal.filter((movie) => {
+            return movie.movieId !== MovId;
           });
           setSearchResultBookmark(filteredSearchResultBookmark);
+          localStorage.setItem("searchResultBookmark", JSON.stringify(filteredSearchResultBookmark));
         };
       })
       .catch((err) => {
@@ -314,6 +326,35 @@ function App() {
         <Routes>
           <Route path="/" element={<Main/>}/>
           <Route 
+            path="/movies" 
+            element={<ProtectedRoute
+              path="/movies"
+              element={Movies}
+              isLoading={isLoading}
+              loggedIn={loggedIn}
+              isNewSearchAttempt={isNewSearchAttempt}
+              onIsNewSearchAttempt={setIsNewSearchAttempt}
+              onSearchMovies={handleSearchMovies}
+              isMovieList={searchResult}
+              onAddBookmark={handleBookmarkCreate}
+              onDeleteBookmark={handleBookmarkDelete}
+            />}
+          />
+          <Route 
+            path="/saved-movies" 
+            element={<ProtectedRoute
+              path="/saved-movies"
+              element={SavedMovies}
+              isLoading={isLoading}
+              loggedIn={loggedIn}
+              onSearchMovies={handleBookmarkSearch}
+              onDeleteBookmark={handleBookmarkDelete}
+              onResetBookmarkSearchForm={handleResetBookmarkSearchForm}
+              isMovieList={isBookmarkSearchMovieList ? searchResultBookmark : bookmarkMovieList}
+              isBookmarkSearchMovieList={isBookmarkSearchMovieList}
+            />}
+          />
+          <Route 
             path="/signup" 
             element={!loggedIn ? 
               <Register isLoading={isLoading} loggedIn={loggedIn} onSignup={handleSignup}/> 
@@ -338,36 +379,6 @@ function App() {
               onProfileEditButton={handleProfileEditButton}
               onProfileUpdate={handleProfileUpdate}
               isProfileEditButton={profileEditButton}
-            />}
-          />
-          <Route 
-            path="/movies" 
-            element={<ProtectedRoute
-              path="/movies"
-              element={Movies}
-              movieList={movieList}
-              isLoading={isLoading}
-              loggedIn={loggedIn}
-              isNewSearchAttempt={isNewSearchAttempt}
-              onSearchMovies={handleSearchMovies}
-              onIsNewSearchAttempt={setIsNewSearchAttempt}
-              isMovieList={searchResult}
-              onAddBookmark={handleBookmarkCreate}
-              onDeleteBookmark={handleBookmarkDelete}
-            />}
-          />
-          <Route 
-            path="/saved-movies" 
-            element={<ProtectedRoute
-              path="/saved-movies"
-              element={SavedMovies}
-              isLoading={isLoading}
-              loggedIn={loggedIn}
-              onSearchMovies={handleBookmarkSearch}
-              onDeleteBookmark={handleBookmarkDelete}
-              onResetBookmarkSearchForm={handleResetBookmarkSearchForm}
-              isMovieList={isBookmarkSearchMovieList ? searchResultBookmark : bookmarkMovieList}
-              isBookmarkSearchMovieList={isBookmarkSearchMovieList}
             />}
           />
           <Route path="*" element={<Error code="404" description="Страница не найдена" loggedIn={loggedIn}/>}/>
