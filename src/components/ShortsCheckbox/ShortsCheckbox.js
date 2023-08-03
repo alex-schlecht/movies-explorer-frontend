@@ -11,8 +11,8 @@ const ShortsCheckbox = ({onChange, isCheckboxValue}) => {
         name="shorts-checkbox__checkbox"
         id="shorts-checkbox__checkbox"
         onChange={handleChangeCheckbox}
-        checked={isCheckboxValue ["shorts-checkbox__checkbox"] || ""}
-        value={isCheckboxValue ["shorts-checkbox__checkbox"]}
+        checked={isCheckboxValue["shorts-checkbox__checkbox"] || ""}
+        value={isCheckboxValue["shorts-checkbox__checkbox"]}
         required={false}
       ></input>
       <span className="shorts-checkbox__name">
