@@ -33,6 +33,7 @@ function App() {
   const [isBookmarkSearchMovieList, setIsBookmarkSearchMovieList] = useState(false);
   const [isNewSearchAttempt, setIsNewSearchAttempt] = useState(false);
   const [profileEditButton, setProfileEditButton] = useState(false);
+  const [isProfileDataSaving, setIsProfileDataSaving] = useState(false);
   const [tooltipResponseType, setTooltipResponseType] = useState('');
   const [tooltipResponseText, setTooltipResponseText] = useState('');
   const [tooltipPopupOpen, setTootipPopupOpen] = useState(false);
@@ -82,6 +83,7 @@ function App() {
   };
 
   const handleProfileUpdate = (name, email) => {
+    setIsProfileDataSaving(true);
     AppApi.profileUpdate(name, email)
       .then((res) => {
         setCurrentUser({ email: res.email, name: res.name, _id: res._id });
@@ -97,10 +99,13 @@ function App() {
         } else {
           setTooltipResponseText(PROFILE_ERROR_TEXT[500]);
         }
-      }).finally(() => setTootipPopupOpen(true));
+      }).finally(() => {
+        setTootipPopupOpen(true);
+        setIsProfileDataSaving(false);
+      });
   };
 
-  const handleProfileEditButton = (state) => setProfileEditButton(state);
+  const handleProfileEditButton = () => setProfileEditButton(true);
 
   const handleSignout = useCallback(() => {
     AppApi.signout()
@@ -234,8 +239,6 @@ function App() {
 
       const searchResultMovieList = activeBookmarkMovieList(movieListLocal, connectedBookmarkMovieList);
       localStorage.setItem('movieList', JSON.stringify(searchResultMovieList));
-
-      setSearchResult(searchResultMovieList);
       if (isBookmarkSearchMovieList) {
         const parseInputValue = JSON.parse(localStorage.getItem("inputValueBookmark")) || {};
         const searchStringValue = parseInputValue[ "search-string__name" ] || "";
@@ -326,6 +329,34 @@ function App() {
         <Routes>
           <Route path="/" element={<Main/>}/>
           <Route 
+            path="/signup" 
+            element={!loggedIn ? 
+              <Register isLoading={isLoading} loggedIn={loggedIn} onSignup={handleSignup}/> 
+              : 
+              <Navigate to="/"/>}
+          />
+          <Route 
+            path="/signin" 
+            element={!loggedIn ? 
+              <Login isLoading={isLoading} loggedIn={loggedIn} onSignin={handleSignin}/> 
+              :
+              <Navigate to="/movies"/>}
+          />
+          <Route 
+            path="/profile" 
+            element={<ProtectedRoute
+              path="/profile"
+              element={Profile}
+              isLoading={isLoading}
+              loggedIn={loggedIn}
+              onSignOut={handleSignout}
+              onProfileEditButton={handleProfileEditButton}
+              onProfileUpdate={handleProfileUpdate}
+              isProfileEditButton={profileEditButton}
+              isProfileDataSaving={isProfileDataSaving}
+            />}
+          />
+          <Route 
             path="/movies" 
             element={<ProtectedRoute
               path="/movies"
@@ -354,34 +385,7 @@ function App() {
               isBookmarkSearchMovieList={isBookmarkSearchMovieList}
             />}
           />
-          <Route 
-            path="/signup" 
-            element={!loggedIn ? 
-              <Register isLoading={isLoading} loggedIn={loggedIn} onSignup={handleSignup}/> 
-              : 
-              <Navigate to="/"/>}
-          />
-          <Route 
-            path="/signin" 
-            element={!loggedIn ? 
-              <Login isLoading={isLoading} loggedIn={loggedIn} onSignin={handleSignin}/> 
-              :
-              <Navigate to="/movies"/>}
-          />
-          <Route 
-            path="/profile" 
-            element={<ProtectedRoute
-              path="/profile"
-              element={Profile}
-              isLoading={isLoading}
-              loggedIn={loggedIn}
-              onSignOut={handleSignout}
-              onProfileEditButton={handleProfileEditButton}
-              onProfileUpdate={handleProfileUpdate}
-              isProfileEditButton={profileEditButton}
-            />}
-          />
-          <Route path="*" element={<Error code="404" description="Страница не найдена" loggedIn={loggedIn}/>}/>
+          <Route path="*" element={<Error code="404" description="Страница не найдена"/>}/>
         </Routes>
         {!allRoutesFooter.includes(location.pathname) ? null : <Footer/>}
         {!loggedIn ? null : <MobileMenuPopup isOpen={isMenuOpen} onClose={closeAllPopups} onClickOverlay={closeAllPopups}/>}

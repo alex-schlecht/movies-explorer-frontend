@@ -83,12 +83,12 @@ const MoviesCardList = ({movieList, isNewSearchAttempt, onIsNewSearchAttempt, is
           );
         } else {
           return "";
-        };
-      })()};
+        }
+      })()}
       {location.pathname === '/movies' 
       && renderMoviesArray.length > 3 
       && renderMoviesArray.length < movieList.length ? 
-      (<ShowMoreButton onLoadMore={handleLoadMore}/>) : null};
+      (<ShowMoreButton onLoadMore={handleLoadMore}/>) : null}
     </section>
   );
 };

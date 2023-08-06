@@ -1,6 +1,6 @@
 import React from "react";
 import ProgressionBar from "../ProgressionBar/ProgressionBar";
-import HeadingGrade2 from "../HeadingGrade/HeadingGrade2/HeadingGrade2";
+import HeadingGrade2 from "../../HeadingGrade/HeadingGrade2/HeadingGrade2";
 import AboutProjectInfo from "../AboutProjectInfo/AboutProjectInfo";
 
 const aboutProject = [

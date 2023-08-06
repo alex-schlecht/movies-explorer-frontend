@@ -104,7 +104,12 @@
   row-gap: 16px;
 }
 
+.profile__buttons {
+  margin-top: 220px;
+}
+
 .profile__button {
+  display: flex;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
@@ -114,12 +119,12 @@
   cursor: pointer;
   border: none;
   transition: opacity .3s ease;
+  margin: 0 auto;
 }
 .profile__button:hover {
   opacity: .8;
 }
 .profile__disabled-button {
-  background-color: #f8f8f8;
   color: #c2c2c2;
   cursor: default;
 }
@@ -165,6 +170,10 @@
   .profile__errors-resume {
     margin-top: 147px;
   }
+
+  .profile__buttons {
+    margin-top: 210px;
+  }
 }
 
 @media screen and (max-width: 544px) {
@@ -189,5 +198,9 @@
 
   .profile__errors-resume {
     margin-top: 316px;
+  }
+
+  .profile__buttons {
+    margin-top: 379px;
   }
 }

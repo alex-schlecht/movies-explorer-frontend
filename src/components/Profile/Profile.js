@@ -8,7 +8,8 @@ const Profile = ({
     onSignOut,
     onProfileUpdate,
     onProfileEditButton,
-    isProfileEditButton
+    isProfileEditButton,
+    isProfileDataSaving
   }) => {
   const {inputValue, inputInvalid, inputValid,  handleFormChange, resetForm} = useValidation();
   const currentUser = useContext(CurrentUser);
@@ -70,7 +71,7 @@ const Profile = ({
       type: "email",
       placeholder: "E-mail",
       label: "E-mail",
-      pattern: pattern_email
+      pattern: pattern_email,
     }
   ];
 
@@ -89,6 +90,7 @@ const Profile = ({
         value={inputValue[input.name] || ""}
         onClick={handleSelectField}
         onChange={handleFormChange}
+        disabled={!isProfileEditButton}
       />
       <span className={formClassSettings.textOfErrorNameOfClass}>
         {inputInvalid[input.name]}
@@ -101,12 +103,13 @@ const Profile = ({
       <h1 className="profile__heading">Привет, {currentUser.name}!</h1>
       <form className={formClassSettings.formNameOfClass} onSubmit={handleSubmit} action="#">
         {formInputFields}
+        <div className="profile__buttons">
           {isProfileEditButton ?
             (
               <button 
                 className={`${formClassSettings.buttonNameOfClass} ${(!isLoading && inputValid) ?
                 "" : formClassSettings.disabledButtonNameOfClass}`} 
-                disabled={isLoading || !inputValid} 
+                disabled={isLoading || isProfileDataSaving || !inputValid} 
                 type="submit"
               >
                 Сохранить
@@ -117,7 +120,6 @@ const Profile = ({
               <nav className="profile__navigation">
                 <button
                   type="button"
-                  disabled={isLoading || !inputValid}
                   className={`profile__edit-button ${!isLoading && inputValid ? "" : 'profile__disabled-button'}`} 
                   onClick={handleProfileEdit}
                 >
@@ -133,6 +135,7 @@ const Profile = ({
               </nav>
             )
           }
+        </div>
       </form>
     </main>
   );

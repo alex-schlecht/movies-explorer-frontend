@@ -10,8 +10,8 @@ const SearchString = ({onSearchMovies, onResetBookmarkSearchForm}) => {
   const [errorMessage, setErrorMessage] = useState('');
   
   useEffect(() => {
-    const localStorageLoc = location.pathname === "/movies" ? "inputValueMovies" : "inputValueBookmark";
-    const parseInputValue = JSON.parse(localStorage.getItem(localStorageLoc)) || {};
+    const localStorageKey = location.pathname === "/movies" ? "inputValueMovies" : "inputValueBookmark";
+    const parseInputValue = JSON.parse(localStorage.getItem(localStorageKey)) || {};
     resetForm(parseInputValue);
   }, [location.pathname]);
 
@@ -31,11 +31,11 @@ const SearchString = ({onSearchMovies, onResetBookmarkSearchForm}) => {
   const handleCheckboxChange = (event) => {
     handleFormChange(event);
     const checkboxValue = event.target.checked || false;
-    const localStorageLoc = location.pathname === "/movies" ? "inputValueMovies" : "inputValueBookmark";
-    const parseCheckbox = JSON.parse(localStorage.getItem(localStorageLoc)) || {};
+    const localStorageKey = location.pathname === "/movies" ? "inputValueMovies" : "inputValueBookmark";
+    const parseCheckbox = JSON.parse(localStorage.getItem(localStorageKey)) || {};
     const updatedParseCheckbox = {...parseCheckbox, "shorts-checkbox__checkbox": checkboxValue};
-    localStorage.setItem(localStorageLoc, JSON.stringify(updatedParseCheckbox));
-    onSearchMovies(inputValue[ "search-string__movie-input" ] || "", checkboxValue);
+    localStorage.setItem(localStorageKey, JSON.stringify(updatedParseCheckbox));
+    onSearchMovies(inputValue[ "search-string__name" ] || "", checkboxValue);
 
   };
 
@@ -52,12 +52,12 @@ const SearchString = ({onSearchMovies, onResetBookmarkSearchForm}) => {
     };
 
     const localStorageNewInputValues = {
-      "search-string__movie-input": searchInputValue,
+      "search-string__name": searchInputValue,
       "shorts-checkbox__checkbox": checkboxValue
     };
-    const localStorageLoc = location.pathname === "/movies" ? "inputValueMovies" : "inputValueBookmark";
-    const localStorageInputValues = JSON.parse(localStorage.getItem(localStorageLoc)) || {};
-    localStorage.setItem(localStorageLoc, JSON.stringify({...localStorageInputValues, ...localStorageNewInputValues}));
+    const localStorageKey = location.pathname === "/movies" ? "inputValueMovies" : "inputValueBookmark";
+    const localStorageInputValues = JSON.parse(localStorage.getItem(localStorageKey)) || {};
+    localStorage.setItem(localStorageKey, JSON.stringify({...localStorageInputValues, ...localStorageNewInputValues}));
     onSearchMovies(searchInputValue, checkboxValue);
   };
 
@@ -81,7 +81,7 @@ const SearchString = ({onSearchMovies, onResetBookmarkSearchForm}) => {
           value={inputValue["search-string__name"] || ""}
         >
         </input>
-        {(location.pathname === "/saved-movies" && inputValue["search-string__movie-input"]?.length > 0) ?
+        {(location.pathname === "/saved-movies" && inputValue["search-string__name"]?.length > 0) ?
         (<button className="search-string__button search-string__button-reset" type="button" onClick={handleReset}></button>) : ""}
         <button className="search-string__button" type="submit"></button>
       </div>
