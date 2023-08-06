@@ -27,7 +27,7 @@ const MoviesCardList = ({movieList, isNewSearchAttempt, onIsNewSearchAttempt, is
   useEffect(() => {
     const localStorageKey = location.pathname === "/movies" ? "inputValueMovies" : "inputValueBookmark";
     const parseValue = JSON.parse(localStorage.getItem(localStorageKey)) || {};
-    if (parseValue?.hasOwnProperty("search-string__movie") && renderMoviesArray && renderMoviesArray.length === 0) {
+    if (parseValue?.hasOwnProperty("search-string__name") && renderMoviesArray && renderMoviesArray.length === 0) {
       setRememberSearch(true);
     } else {
       setRememberSearch(false);
