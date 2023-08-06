@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from "react-router-dom";
 import { useResize } from "../../hooks/useResize";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import ShowMoreButton from "../ShowMoreButton/ShowMoreButton";
+import ShowMoreButton from "../Movies/ShowMoreButton/ShowMoreButton";
 import {
   SCREEN_1280,
   SCREEN_768,
