@@ -1,10 +1,10 @@
 import React from "react";
 import useValidation from "../../hooks/useValidation"
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LogoLink from "../Header/LogoLink/LogoLink";
+import { pattern_email, pattern_name } from "../../constants/uriPattern";
 
-const Register = ({resumeOfErrors}) => {
-  const navigate = useNavigate();
+const Register = ({resumeOfErrors, onSignup, loggedIn, isLoading}) => {
   const {inputValue, inputInvalid, inputValid,  handleFormChange} = useValidation();
 
   const inputFields = [
@@ -15,7 +15,7 @@ const Register = ({resumeOfErrors}) => {
       type: "text",
       placeholder: "Имя",
       label: "Имя",
-      pattern: "[А-Яа-яA-Za-z]{3,30}",
+      pattern: pattern_name
     },
     {
       name: "email",
@@ -24,6 +24,7 @@ const Register = ({resumeOfErrors}) => {
       type: "email",
       placeholder: "E-mail",
       label: "E-mail",
+      pattern: pattern_email
     },
     {
       name: "password",
@@ -41,8 +42,8 @@ const Register = ({resumeOfErrors}) => {
   };
 
   function handleSubmit(event) {
+    onSignup(inputValue.email, inputValue.password, inputValue.name);
     event.preventDefault();
-    navigate("/signin");
   };
 
   const formClassSettings = {
@@ -90,7 +91,12 @@ const Register = ({resumeOfErrors}) => {
       <form className={formClassSettings.formNameOfClass} onSubmit={handleSubmit} action="#">
         {formInputFields}
         <span className={formClassSettings.resumeOfErrorsNameOfClass}>{resumeOfErrors}</span>
-        <button className={`${inputValid ? "" : formClassSettings.disabledButtonNameOfClass} ${formClassSettings.buttonNameOfClass}`}>
+        <button 
+          className={`${!loggedIn && (!isLoading && inputValid) ? 
+          "" : formClassSettings.disabledButtonNameOfClass} ${formClassSettings.buttonNameOfClass}`}
+          disabled={isLoading || !inputValid}
+          type="submit"
+        >
           Зарегистрироваться
         </button>
       </form>

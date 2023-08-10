@@ -1,14 +1,32 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
 import useValidation from "../../hooks/useValidation";
+import { pattern_email, pattern_name } from "../../constants/uriPattern";
+import { CurrentUser } from '../../context/CurrentUser';
 
-const Profile = ({ resumeOfErrors = "Произошла ошибка при изменении профиля"}) => {
-  const [editProfileButton, setEditProfileButton] = useState(false);
-  const {inputValue, inputInvalid, inputValid,  handleFormChange} = useValidation();
+const Profile = ({
+    isLoading,
+    onSignOut,
+    onProfileUpdate,
+    onProfileEditButton,
+    isProfileEditButton,
+    isProfileDataSaving
+  }) => {
+  const {inputValue, inputInvalid, inputValid,  handleFormChange, resetForm} = useValidation();
+  const currentUser = useContext(CurrentUser);
 
-  const handleEditProfile = () => {
-    setEditProfileButton(!editProfileButton);
+  useEffect(() => {
+    if (currentUser)
+      resetForm(currentUser);
+  }, [currentUser, resetForm]);
+
+  useEffect(() => {
+    if (inputValue.name === currentUser.name && inputValue.email === currentUser.email) {
+      resetForm(inputValue, {}, false);
+    }
+  }, [inputValue]);
+
+  const handleProfileEdit = () => {
+    onProfileEditButton(true);
   };
 
   function handleSelectField(event) {
@@ -17,8 +35,12 @@ const Profile = ({ resumeOfErrors = "Произошла ошибка при из
 
   function handleSubmit(event) {
     event.preventDefault();
-    setEditProfileButton(!editProfileButton);
+    onProfileUpdate(inputValue.name, inputValue.email);
   };
+
+  function handleSignOut() {
+    onSignOut();
+  }
 
   const formClassSettings = {
     formNameOfClass: "profile__form",
@@ -40,7 +62,7 @@ const Profile = ({ resumeOfErrors = "Произошла ошибка при из
       type: "text",
       placeholder: "Имя",
       label: "Имя",
-      pattern: "[А-Яа-яA-Za-z]{3,30}",
+      pattern: pattern_name,
     },
     {
       name: "email",
@@ -49,6 +71,7 @@ const Profile = ({ resumeOfErrors = "Произошла ошибка при из
       type: "email",
       placeholder: "E-mail",
       label: "E-mail",
+      pattern: pattern_email,
     }
   ];
 
@@ -67,6 +90,7 @@ const Profile = ({ resumeOfErrors = "Произошла ошибка при из
         value={inputValue[input.name] || ""}
         onClick={handleSelectField}
         onChange={handleFormChange}
+        disabled={!isProfileEditButton}
       />
       <span className={formClassSettings.textOfErrorNameOfClass}>
         {inputInvalid[input.name]}
@@ -76,20 +100,42 @@ const Profile = ({ resumeOfErrors = "Произошла ошибка при из
 
   return (
     <main className="profile">
-      <h1 className="profile__heading">Привет, Виталий!</h1>
+      <h1 className="profile__heading">Привет, {currentUser.name}!</h1>
       <form className={formClassSettings.formNameOfClass} onSubmit={handleSubmit} action="#">
         {formInputFields}
-        <span className={formClassSettings.resumeOfErrorsNameOfClass}>{editProfileButton && resumeOfErrors}</span>
-        {editProfileButton ? 
-          (<button className={`${formClassSettings.buttonNameOfClass} ${inputValid ? "" : 
-          formClassSettings.disabledButtonNameOfClass}`}>
-            Сохранить
-          </button>) :
-          (<nav className="profile__navigation">
-            <button className="profile__edit-button" onClick={handleEditProfile}>Редактировать</button>
-            <Link className="profile__quit profile__quit-red" to="/signin">Выйти из аккаунта</Link>
-          </nav>)
-        }
+        <div className="profile__buttons">
+          {isProfileEditButton ?
+            (
+              <button 
+                className={`${formClassSettings.buttonNameOfClass} ${(!isLoading && inputValid) ?
+                "" : formClassSettings.disabledButtonNameOfClass}`} 
+                disabled={isLoading || isProfileDataSaving || !inputValid} 
+                type="submit"
+              >
+                Сохранить
+              </button>
+            ) 
+              :
+            (
+              <nav className="profile__navigation">
+                <button
+                  type="button"
+                  className={`profile__edit-button ${!isLoading && inputValid ? "" : 'profile__disabled-button'}`} 
+                  onClick={handleProfileEdit}
+                >
+                  Редактировать
+                </button>
+                <button 
+                  className="profile__button profile__quit-red" 
+                  onClick={handleSignOut}
+                  type="button"
+                >
+                  Выйти из аккаунта
+                </button>
+              </nav>
+            )
+          }
+        </div>
       </form>
     </main>
   );

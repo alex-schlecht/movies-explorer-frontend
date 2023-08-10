@@ -17,6 +17,15 @@
   margin: 0;
 }
 
+.movies-card-list__none {
+  text-align: center;
+  color: #EE3465;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+}
+
+
 @media screen and (max-width: 768px) {
   .movies-card-list__cards {
     grid-template-columns: repeat(auto-fit, 339px);

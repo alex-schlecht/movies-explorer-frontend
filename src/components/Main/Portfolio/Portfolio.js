@@ -1,5 +1,5 @@
 import React from "react";
-import HeadingGrade5 from "../HeadingGrade/HeadingGrade5/HeadingGrade5";
+import HeadingGrade5 from "../../HeadingGrade/HeadingGrade5/HeadingGrade5";
 import { Link } from "react-router-dom";
 
 const Portfolio = () => {

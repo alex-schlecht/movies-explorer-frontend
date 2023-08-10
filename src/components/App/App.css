@@ -13,3 +13,7 @@
   width: 100%;
   margin: 0 auto;
 }
+
+:root {
+  background-color: #202020;
+}

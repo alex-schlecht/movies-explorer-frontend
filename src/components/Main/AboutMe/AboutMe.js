@@ -1,7 +1,7 @@
 import React from "react";
-import HeadingGrade2 from "../HeadingGrade/HeadingGrade2/HeadingGrade2";
-import HeadingGrade3 from "../HeadingGrade/HeadingGrade3/HeadingGrade3";
-import HeadingGrade4 from "../HeadingGrade/HeadingGrade4/HeadingGrade4";
+import HeadingGrade2 from "../../HeadingGrade/HeadingGrade2/HeadingGrade2";
+import HeadingGrade3 from "../../HeadingGrade/HeadingGrade3/HeadingGrade3";
+import HeadingGrade4 from "../../HeadingGrade/HeadingGrade4/HeadingGrade4";
 import photo from "../../../images/photo.jpg";
 
 const AboutMe = () => {

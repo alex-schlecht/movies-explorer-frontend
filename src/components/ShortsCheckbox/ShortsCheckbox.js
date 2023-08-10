@@ -1,22 +1,19 @@
-import React from "react";
-import { useState } from "react";
-
-const ShortsCheckbox = ({className = ""}) => {
-  const [checkbox, setCheckbox] = useState(true);
-
-  const handleChange = (state) => {
-    setCheckbox(!state);
+const ShortsCheckbox = ({onChange, isCheckboxValue}) => {
+  const handleChangeCheckbox = (event) => {
+    onChange(event);
   };
 
   return (
-    <div className={`shorts-checkbox ${className}`}>
+    <div className="shorts-checkbox">
       <input 
         className="shorts-checkbox__checkbox" 
         type="checkbox" 
-        name="checkbox"
+        name="shorts-checkbox__checkbox"
         id="shorts-checkbox__checkbox"
-        onChange={handleChange}
-        defaultChecked={checkbox}
+        onChange={handleChangeCheckbox}
+        checked={isCheckboxValue["shorts-checkbox__checkbox"] || ""}
+        value={isCheckboxValue["shorts-checkbox__checkbox"]}
+        required={false}
       ></input>
       <span className="shorts-checkbox__name">
         Короткометражки
